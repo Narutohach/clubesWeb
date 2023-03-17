@@ -1,0 +1,92 @@
+
+Item {
+    box-shadow: 10px 6px 5px grey;
+    font-size: x-large;
+}
+
+.iconx {
+background: red;
+}
+
+.fab {
+    margin: 0px;
+    top: auto;
+    right: 20px;
+    bottom: 20px;
+    left: auto;
+    position: fixed;
+}
+
+.MuiToolbar-root {
+    background: #227C70;
+    font-size: large;
+}
+
+.x {
+    box-shadow: 10px 6px 5px grey;
+    font-size: x-large;
+    text-align: center;
+}
+
+.x:hover {
+    border: 1px solid #777;
+}
+
+.x:active {
+    transform: scale(0.98);
+    /* Scaling button to 0.98 to its original size */
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    /* Lowering the shadow */
+}
+
+.xx {
+    box-shadow: 10px 6px 5px grey;
+    font-size: x-large;
+    background: #227C70;
+}
+
+.xx:hover {
+    border: 1px solid #777;
+}
+
+.xx:active {
+    transform: scale(0.98);
+    /* Scaling button to 0.98 to its original size */
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+    /* Lowering the shadow */
+}
+
+
+div.nome {
+    padding: 10px;
+    font-size: x-large;
+}
+
+div.title {
+    font-size: large;
+    font-weight: bold;
+}
+
+a:link {
+    color: black;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:visited {
+    color: black;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:hover {
+    color: black;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:active {
+    color: black;
+    background-color: transparent;
+    text-decoration: none;
+}
