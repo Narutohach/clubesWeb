@@ -34,11 +34,11 @@ const ProvaLenco = () => {
 
 
     const [livrosList, setLivrosList] = useState([]);
-    const [ok, setOk] = useState(true);
 
 
     useEffect(() => {
-        const resposta = ref(realtime, "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') + "/LIVROS2/" + sessionStorage.getItem('livroId'));
+        const resposta = ref(realtime, "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') +
+            "/LENCO");
 
         // alert("RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') + "/LIVROS2/" + sessionStorage.getItem('livroId') + "/" + data.id)
 
@@ -52,7 +52,14 @@ const ProvaLenco = () => {
                     document.getElementById(data.id)
 
                     if (document.getElementById(data.id)) {
-                        document.getElementById(data.id).style.background = "#00dd0d"
+                        if (!data.aprovado && !data.reprovado) {
+                            document.getElementById(data.id).style.background = "yellow"
+                        } else if (!data.aprovado && data.reprovado) {
+                            document.getElementById(data.id).style.background = "red"
+                        } else {
+
+                            document.getElementById(data.id).style.background = "#00dd0d"
+                        }
                     }
 
                 })
@@ -65,7 +72,7 @@ const ProvaLenco = () => {
     useEffect(() => {
 
 
-        const livros = ref(realtime, "QUESTOES/LIVROS2/" + sessionStorage.getItem('livroId'));
+        const livros = ref(realtime, "QUESTOES/LENCO");
 
 
         onValue(livros, (snapshot) => {
@@ -82,13 +89,47 @@ const ProvaLenco = () => {
 
     }, []);
 
-    const handleClickCapitulos = (id, questao, link) => {
-        sessionStorage.setItem('capituloId', id);
-        sessionStorage.setItem('questao', questao);
-        sessionStorage.setItem('link', link);
-        sessionStorage.setItem('caminho', "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/"
-            + sessionStorage.getItem('id') + "/LIVROS2/" + sessionStorage.getItem('livroId') + "/" + id);
-        navigate('/livros/capitulos/seletor');}
+    const handleClick = (livrox) => {
+        sessionStorage.setItem('capituloId', livrox.id);
+        sessionStorage.setItem('questao', livrox.questão);
+        sessionStorage.setItem('link', livrox.leitura);
+        sessionStorage.setItem('tipo', livrox.tipo);
+        sessionStorage.setItem('descricao', livrox.descricao);
+        sessionStorage.setItem('minCaracteres', livrox.minCaracteres);
+        sessionStorage.setItem('questionPatch', "QUESTOES/LENCO/" + livrox.id);
+
+        if (livrox.tipo === 1) {
+            sessionStorage.setItem('caminho', "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/"
+                + sessionStorage.getItem('id') + "/LENCO/" + livrox.id);
+            navigate('/respostas/escolha');
+        }
+
+        if (livrox.tipo === 2 || livrox.tipo === 11) {
+            sessionStorage.setItem('caminho', "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/"
+                + sessionStorage.getItem('id') + "/LENCO/" + livrox.id);
+            navigate('/respostas/texto');
+        }
+
+        if (livrox.tipo === 4) {
+            sessionStorage.setItem('caminho', "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/"
+                + sessionStorage.getItem('id') + "/LENCO/" + livrox.id);
+            navigate('/respostas/pontuacao');
+        }
+
+        if (livrox.tipo === 8) {
+            sessionStorage.setItem('caminho', "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/"
+                + sessionStorage.getItem('id') + "/LENCO/" + livrox.id);
+            navigate('/respostas/video');
+        }
+
+        if (livrox.tipo === 16) {
+            sessionStorage.setItem('caminho', "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/"
+                + sessionStorage.getItem('id') + "/LENCO/" + livrox.id);
+            navigate('/respostas/pdf');
+        }
+
+
+    }
 
 
     return (
@@ -118,8 +159,8 @@ const ProvaLenco = () => {
                     <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
                         {livrosList.map((livrox, i) => (
                             <Grid justifyContent="flex-end" item xs={12} key={i}>
-                                <Item id ={livrox.id} className={"xx"} onClick={() => {
-                                    handleClickCapitulos(livrox.id, livrox.questão, livrox.link)
+                                <Item id={livrox.id} className={"xx"} onClick={() => {
+                                    handleClick(livrox)
                                 }}>
                                     <div className="title">{livrox.questão}</div>
                                     <div className="desc">{livrox.descricao}</div>

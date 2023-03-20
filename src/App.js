@@ -9,6 +9,9 @@ import Capitulos from "./livros/Capitulos"
 import Seletor from "./livros/Seletor"
 import Video from "./respostas/Video"
 import Pdf from "./respostas/Pdf"
+import Texto from "./respostas/Text"
+import Pontuacao from "./respostas/Pontuacao"
+import Escolha from "./respostas/Escolha"
 import Lenco from "./prova_lenco/ProvaLenco"
 
 const App = () => (
@@ -22,6 +25,9 @@ const App = () => (
             <Route path="/livros/capitulos/seletor" element={<Seletor />} />
             <Route path="/respostas/video" element={<Video />} />
             <Route path="/respostas/pdf" element={<Pdf />} />
+            <Route path="/respostas/texto" element={<Texto />} />
+            <Route path="/respostas/pontuacao" element={<Pontuacao />} />
+            <Route path="/respostas/escolha" element={<Escolha />} />
             <Route path="/lenco" element={<Lenco />} />
         </Routes>
     </Router>
