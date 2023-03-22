@@ -4,26 +4,54 @@ import '../menu/MenuPrincipal.css';
 import {experimentalStyled as styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import {AppBar, Fab, Rating, Toolbar} from "@mui/material";
+import {AppBar, Card, CardMedia, Fab, Toolbar} from "@mui/material";
+import TextField from '@mui/material/TextField';
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/ArrowBack";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {onValue, ref, set} from "@firebase/database";
 import {realtime} from "../firebase_setup/firebase";
 import AddIcon from "@mui/icons-material/Check";
+import Button from "@mui/material/Button";
+import {Stack} from "@mui/system";
 
-const Pontuacao = () => {
+const TextoAnexo = () => {
+
+
+    const {state} = useLocation();
+    const {passa} = state;
 
 
     const nome = sessionStorage.getItem("nome")
     const clube = sessionStorage.getItem("clube")
-    const questao = sessionStorage.getItem("questao")
+
+    useEffect(() => {
+        if (!sessionStorage.getItem("clubesadasd")) {
+            navigate('/', { replace: true });
+        }
+    }, [])
 
 
-    const [value, setValue] = React.useState(0);
+    const [texto, setTexto] = useState("");
+    const [base64, setBase64] = useState("");
+    const [textoErro, setTextoErro] = useState("");
+
+    useEffect(() => {
+
+        var doc = document.getElementById("fab")
 
 
+        if (texto.length < passa.minCaracteres) {
+            setTextoErro("O texto precisa conter mais de " + passa.minCaracteres + " caracteres.     " + texto.length + " de " + passa.minCaracteres);
+            doc.style.visibility = "hidden"
+        } else {
+            setTextoErro("")
+            if (base64.length > 5)
+                doc.style.visibility = "visible"
+
+        }
+    })
 
     useEffect(() => {
 
@@ -35,7 +63,8 @@ const Pontuacao = () => {
 
             if (snapshot.exists()) {
                 const data = snapshot.val();
-                setValue(data.nota)
+                setTexto("" + data.texto)
+                setBase64("data:image/png;base64," + data.imagem)
             }
 
         });
@@ -44,6 +73,13 @@ const Pontuacao = () => {
     }, []);
 
 
+    const Item = styled(Paper)(({theme}) => ({
+        backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+        ...theme.typography.body2,
+        padding: theme.spacing(2),
+        color: theme.palette.text.secondary,
+    }));
+
     const navigate = useNavigate();
     const goBack = () => {
         navigate(-1);
@@ -51,13 +87,11 @@ const Pontuacao = () => {
 
 
     const [livrosList, setLivrosList] = useState([]);
-
+    const [ok, setOk] = useState(true);
 
 
     useEffect(() => {
         const resposta = ref(realtime, sessionStorage.getItem("caminho"));
-
-        // alert("RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') + "/LIVROS2/" + sessionStorage.getItem('livroId') + "/" + data.id)
 
 
         onValue(resposta, (s1) => {
@@ -103,14 +137,14 @@ const Pontuacao = () => {
 
         set(referencia,
             {
-                id: sessionStorage.getItem('capituloId'),
+                id: passa.id,
                 concluido: true,
                 data: hora,
-                nota: value,
-                tipo: 4,
+                tipo: 11,
                 calendario: "",
-                texto: "",
-                aprovado: true,
+                texto: texto,
+                imagem: base64.split(",")[1],
+                aprovado: false,
                 reprovado: false
             }
         )
@@ -125,7 +159,14 @@ const Pontuacao = () => {
         padding: 10
     };
 
+    const style2 = {
+        width: "100%",
+        height: "90%"
+    };
 
+    const style3 = {
+        width: "190px"
+    };
 
     const style = {
         margin: 0,
@@ -136,18 +177,6 @@ const Pontuacao = () => {
         position: 'fixed',
     };
 
-    useEffect(() => {
-
-        var doc = document.getElementById("fab")
-
-
-        if (value==0) {
-            doc.style.visibility = "hidden"
-        } else {
-            doc.style.visibility = "visible"
-
-        }
-    })
 
     if (document.getElementById("fab")) {
         document.getElementById("fab").onclick = function () {
@@ -175,6 +204,39 @@ const Pontuacao = () => {
     }, [selectedFile])
 
 
+    function getBase64(file) {
+        return new Promise(resolve => {
+            let fileInfo;
+            let baseURL = "";
+            // Make new FileReader
+            let reader = new FileReader();
+
+            // Convert the file to base64 text
+            reader.readAsDataURL(file);
+
+            // on reader load somthing...
+            reader.onload = () => {
+                // Make a fileInfo Object
+
+                baseURL = reader.result;
+                setBase64(baseURL);
+            };
+        });
+    }
+
+
+    const onSelectFile = e => {
+        if (!e.target.files || e.target.files.length === 0) {
+            setSelectedFile(undefined)
+            return
+        }
+
+        // I've kept this example simple by using the first image instead of multiple
+
+        getBase64(e.target.files[0])
+
+        setSelectedFile(e.target.files[0])
+    }
 
 
     return (
@@ -192,7 +254,7 @@ const Pontuacao = () => {
                         </IconButton>
 
                         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                            Clube {clube} (Resposta de Pontuação)
+                            Clube {clube} (Resposta de Texto)
                         </Typography>
 
 
@@ -201,23 +263,30 @@ const Pontuacao = () => {
             </Box>
             <div>
                 <h3 style={style1}>
-                    {questao}
+                    {passa.questão}
                 </h3>
             </div>
 
             <div style={style1}>
+                <TextField style={style2}
+                           error={texto.length < passa.minCaracteres}
+                           helperText={textoErro}
+                           id="outlined-basic"
+                           value={texto}
+                           label={passa.descricao}
+                           onChange={(e) => {
+                               setTexto(e.target.value);
+                           }}
+                           multiline={5}
+                           rows={20}
+                           variant="outlined"/>
+                <Stack style={style1} direction="row" spacing={2} xs={12}>
+                    <div>
+                        <input type='file' onChange={onSelectFile}/>
 
-
-                <Rating
-                    name="simple-controlled"
-                    value={value}
-                    precision={0.5}
-                    onChange={(event, newValue) => {
-                        setValue(newValue);
-                    }}
-                    size = {"large"}
-                />
-                <Typography component="legend">Nota: {value}</Typography>
+                    </div>
+                    {base64.length > 5 && <img src={base64} style={style3}/>}
+                </Stack>
             </div>
 
 
@@ -229,4 +298,4 @@ const Pontuacao = () => {
     );
 
 }
-export default Pontuacao
+export default TextoAnexo

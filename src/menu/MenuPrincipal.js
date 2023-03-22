@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import espec from '../imagens/ic_especialidades.svg';
+import classes from '../imagens/ic_classes.svg';
 import logoIdeais from '../imagens/ic_ideais.svg';
 import logoLivros from '../imagens/ic_livros.svg';
 import logoLenco from '../imagens/lenco_removebg.png';
@@ -31,6 +32,10 @@ const MenuPrincipal = () => {
     }));
 
     const navigate = useNavigate();
+
+    const handleClickEspecialidades = () => navigate('/categoriaespecialidade');
+
+    const handleClickClasses = () => navigate('/classes');
     const handleClickIdeais = () => navigate('/ideais');
     const handleClickLivros = () => navigate('/livros');
     const handleClickLenco = () => navigate('/lenco');
@@ -67,11 +72,23 @@ const MenuPrincipal = () => {
             <div className="nome">Olá {nome}</div>
             <div>
                 <Box sx={{flexGrow: 1, margin: 2}}>
+
                     <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
-                        <Grid item xs={2} onClick={() => {
-                            alert("ok")
-                        }}>
-                            <Item className={"x"}>
+
+                        <Grid item xs={2}>
+                            <Item className={"x"} onClick={() => {
+                                handleClickClasses()
+                            }}>
+                                <img src={classes} alt="Especialidades" width="300" height="200"></img>
+                                <div className="desc">Classes</div>
+                            </Item>
+                        </Grid>
+
+
+                        <Grid item xs={2}>
+                            <Item className={"x"} onClick={() => {
+                                handleClickEspecialidades()
+                            }}>
                                 <img src={espec} alt="Especialidades" width="300" height="200"></img>
                                 <div className="desc">Especialidades</div>
                             </Item>

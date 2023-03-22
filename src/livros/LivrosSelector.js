@@ -58,9 +58,9 @@ const LivrosSelector = () => {
     }, []);
 
     const handleClickCapitulos = (id, nome) => {
-        sessionStorage.setItem("livroId", id);
-        sessionStorage.setItem("origem", "leitura");
-        sessionStorage.setItem("nomeLivro", nome);
+        sessionStorage.setItem("livroIdz", id);
+        sessionStorage.setItem("origemz", "leitura");
+        sessionStorage.setItem("nomeLivroz", nome);
         navigate('/livros/capitulos');}
 
 

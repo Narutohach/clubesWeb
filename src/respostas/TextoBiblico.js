@@ -4,7 +4,8 @@ import '../menu/MenuPrincipal.css';
 import {experimentalStyled as styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import {AppBar, Fab, Rating, Toolbar} from "@mui/material";
+import {AppBar, Card, CardMedia, Fab, Toolbar} from "@mui/material";
+import TextField from '@mui/material/TextField';
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/ArrowBack";
@@ -12,31 +13,42 @@ import {useNavigate} from "react-router-dom";
 import {onValue, ref, set} from "@firebase/database";
 import {realtime} from "../firebase_setup/firebase";
 import AddIcon from "@mui/icons-material/Check";
+import Button from "@mui/material/Button";
+import {Stack} from "@mui/system";
+import Grid from "@mui/material/Grid";
 
-const Pontuacao = () => {
+const TextoBiblico = () => {
 
 
     const nome = sessionStorage.getItem("nome")
     const clube = sessionStorage.getItem("clube")
     const questao = sessionStorage.getItem("questao")
+    const descricao = sessionStorage.getItem("descricao")
+    const minCaracteres = sessionStorage.getItem("minCaracteres")
+    const tipo = sessionStorage.getItem("tipo")
 
-
-    const [value, setValue] = React.useState(0);
-
+    const [texto, setTexto] = useState([]);
 
 
     useEffect(() => {
 
 
-        const livros = ref(realtime, sessionStorage.getItem('caminho'));
+        const livros = ref(realtime, "BIBLIA/" + sessionStorage.getItem("livro") + "/chapters/" + sessionStorage.getItem("chapter"));
 
 
         onValue(livros, (snapshot) => {
 
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                setValue(data.nota)
-            }
+            var ll = []
+            snapshot.forEach(snap => {
+                const data = snap.val();
+                const lx = new Object();
+                lx.versiculo = snap.key;
+                lx.texto = data;
+
+                if (parseInt(snap.key) >= parseInt(sessionStorage.getItem("de")) && parseInt(snap.key) <= parseInt(sessionStorage.getItem("para")))
+                    ll.push(lx);
+            })
+            setTexto(ll)
 
         });
 
@@ -44,40 +56,17 @@ const Pontuacao = () => {
     }, []);
 
 
+    const Item = styled(Paper)(({theme}) => ({
+        backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+        ...theme.typography.body2,
+        padding: theme.spacing(2),
+        color: theme.palette.text.secondary,
+    }));
+
     const navigate = useNavigate();
     const goBack = () => {
         navigate(-1);
     }
-
-
-    const [livrosList, setLivrosList] = useState([]);
-
-
-
-    useEffect(() => {
-        const resposta = ref(realtime, sessionStorage.getItem("caminho"));
-
-        // alert("RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') + "/LIVROS2/" + sessionStorage.getItem('livroId') + "/" + data.id)
-
-
-        onValue(resposta, (s1) => {
-
-            if (s1.exists()) {
-                s1.forEach(snap => {
-                    const data = snap.val();
-
-                    document.getElementById(data.id)
-
-                    if (document.getElementById(data.id)) {
-                        document.getElementById(data.id).style.background = "#00dd0d"
-                    }
-
-                })
-
-            }
-        })
-
-    }, [livrosList])
 
 
     function writeUserData() {
@@ -106,10 +95,7 @@ const Pontuacao = () => {
                 id: sessionStorage.getItem('capituloId'),
                 concluido: true,
                 data: hora,
-                nota: value,
-                tipo: 4,
-                calendario: "",
-                texto: "",
+                tipo: 9,
                 aprovado: true,
                 reprovado: false
             }
@@ -125,29 +111,21 @@ const Pontuacao = () => {
         padding: 10
     };
 
-
-
-    const style = {
-        margin: 0,
-        top: 'auto',
-        right: 20,
-        bottom: 20,
-        left: 'auto',
-        position: 'fixed',
+    const style2 = {
+        padding: 1
     };
 
-    useEffect(() => {
+    const style3 = {
+        position: "relative",
+    };
 
-        var doc = document.getElementById("fab")
+    const style = {
+        position: "absolute",
+        bottom: 0,
+        right: 0,
+        padding: 10
+    };
 
-
-        if (value==0) {
-            doc.style.visibility = "hidden"
-        } else {
-            doc.style.visibility = "visible"
-
-        }
-    })
 
     if (document.getElementById("fab")) {
         document.getElementById("fab").onclick = function () {
@@ -155,26 +133,12 @@ const Pontuacao = () => {
         };
     }
 
-
-    const [selectedFile, setSelectedFile] = useState()
-    const [preview, setPreview] = useState()
-
-
-    // create a preview as a side effect, whenever selected file is changed
-    useEffect(() => {
-        if (!selectedFile) {
-            setPreview(undefined)
-            return
+    const handleScroll = (e) => {
+        const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+        if (bottom) {
+            console.log("bottom")
         }
-
-        const objectUrl = URL.createObjectURL(selectedFile)
-        setPreview(objectUrl)
-
-        // free memory when ever this component is unmounted
-        return () => URL.revokeObjectURL(objectUrl)
-    }, [selectedFile])
-
-
+    }
 
 
     return (
@@ -192,7 +156,7 @@ const Pontuacao = () => {
                         </IconButton>
 
                         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                            Clube {clube} (Resposta de Pontuação)
+                            Clube {clube} (Resposta de Texto Bíblico)
                         </Typography>
 
 
@@ -201,32 +165,34 @@ const Pontuacao = () => {
             </Box>
             <div>
                 <h3 style={style1}>
-                    {questao}
+                    {sessionStorage.getItem("descricao_biblia")}
                 </h3>
             </div>
 
-            <div style={style1}>
 
-
-                <Rating
-                    name="simple-controlled"
-                    value={value}
-                    precision={0.5}
-                    onChange={(event, newValue) => {
-                        setValue(newValue);
-                    }}
-                    size = {"large"}
-                />
-                <Typography component="legend">Nota: {value}</Typography>
+            <div style={style1} onScroll={handleScroll}>
+                {texto.map((livrox, i) => (
+                    <div style={{padding: 5, fontSize: "25px"}}>
+                        <b><small><sup>{parseInt(livrox.versiculo) + 1}</sup></small></b>
+                        {" " + livrox.texto}
+                    </div>
+                ))}
             </div>
 
 
-            <Fab id={"fab"} style={style} color="primary" aria-label="add">
-                <AddIcon/>
-            </Fab>
+            <div style={style3}>
+                <br/>
+                <br/>
+                <br/>
+                <div style={style}>
+                    <Fab id={"fab"} color="primary" aria-label="add">
+                        <AddIcon/>
+                    </Fab>
+                </div>
+            </div>
 
         </div>
     );
 
 }
-export default Pontuacao
+export default TextoBiblico

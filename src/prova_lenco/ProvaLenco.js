@@ -34,6 +34,7 @@ const ProvaLenco = () => {
 
 
     const [livrosList, setLivrosList] = useState([]);
+    const [porcento, setPorcento] = useState("0%");
 
 
     useEffect(() => {
@@ -46,23 +47,35 @@ const ProvaLenco = () => {
         onValue(resposta, (s1) => {
 
             if (s1.exists()) {
+
+                let lx = 0;
+
                 s1.forEach(snap => {
-                    const data = snap.val();
+                        const data = snap.val();
 
-                    document.getElementById(data.id)
 
-                    if (document.getElementById(data.id)) {
-                        if (!data.aprovado && !data.reprovado) {
-                            document.getElementById(data.id).style.background = "yellow"
-                        } else if (!data.aprovado && data.reprovado) {
-                            document.getElementById(data.id).style.background = "red"
-                        } else {
+                        if (document.getElementById(data.id)) {
+                            if (!data.aprovado && !data.reprovado) {
+                                document.getElementById(data.id).style.background = "yellow";
+                            } else if (!data.aprovado && data.reprovado) {
+                                document.getElementById(data.id).style.background = "red";
+                            } else {
 
-                            document.getElementById(data.id).style.background = "#00dd0d"
+                                lx = lx + 1;
+                                document.getElementById(data.id).style.background = "#00dd0d";
+                            }
                         }
-                    }
 
-                })
+                    }
+                )
+
+                if (document.getElementById("porcento")) {
+                    document.getElementById("porcento").innerHTML = ((lx * 100) / livrosList.length).toFixed(0) + "%"
+                }
+
+                // setPorcento(((lx*100)/livrosList.length) + "%");
+
+                // setPorcento(lx + "%");
 
             }
         })
@@ -149,6 +162,12 @@ const ProvaLenco = () => {
                         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                             Clube {clube} (Prova do Lenço)
                         </Typography>
+
+                        <div>
+                            <Typography id="porcento" variant="h6" component="div" sx={{flexGrow: 1}}>
+                                0%
+                            </Typography>
+                        </div>
 
 
                     </Toolbar>

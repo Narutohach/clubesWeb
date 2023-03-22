@@ -81,8 +81,7 @@ const Texto = () => {
 
 
     useEffect(() => {
-        const resposta = ref(realtime, "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') +
-            "/LENCO");
+        const resposta = ref(realtime, sessionStorage.getItem("caminho"));
 
         // alert("RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') + "/LIVROS2/" + sessionStorage.getItem('livroId') + "/" + data.id)
 
@@ -106,25 +105,6 @@ const Texto = () => {
 
     }, [livrosList])
 
-    useEffect(() => {
-
-
-        const livros = ref(realtime, "QUESTOES/LENCO");
-
-
-        onValue(livros, (snapshot) => {
-            var ll = []
-            snapshot.forEach(snap => {
-                const data = snap.val();
-                ll.push(data)
-            })
-
-            setLivrosList(ll)
-
-        });
-
-
-    }, []);
 
     function writeUserData() {
 

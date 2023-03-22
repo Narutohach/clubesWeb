@@ -22,6 +22,11 @@ import {useNavigate} from "react-router-dom";
 
 const Login = () => {
 
+    window.history.pushState(null, null, window.location.href);
+    window.onpopstate = () => {
+        window.history.go(1);
+    }
+
 
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
 import '../menu/MenuPrincipal.css';
 import {experimentalStyled as styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -10,10 +9,13 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/ArrowBack";
 import {useNavigate} from "react-router-dom";
-import {onValue, ref} from "@firebase/database";
-import {realtime} from "../firebase_setup/firebase";
+import {getDatabase, ref, onValue} from "@firebase/database"
+import {realtime} from "../firebase_setup/firebase"
+import {useEffect, useState} from "react";
+import MenuItem from "@mui/material/MenuItem";
 
-const Capitulos = () => {
+
+const Especialidades = () => {
 
 
     const nome = sessionStorage.getItem("nome")
@@ -33,41 +35,14 @@ const Capitulos = () => {
     }
 
 
+
+
+
     const [livrosList, setLivrosList] = useState([]);
-    const [ok, setOk] = useState(true);
 
 
+    const livros = ref(realtime, "ESPECIALIDADES/" + sessionStorage.getItem("categoriaId"));
     useEffect(() => {
-        const resposta = ref(realtime, "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') + "/LIVROS2/" + sessionStorage.getItem('livroIdz'));
-
-        // alert("RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') + "/LIVROS2/" + sessionStorage.getItem('livroIdz') + "/" + data.id)
-
-
-        onValue(resposta, (s1) => {
-
-            if (s1.exists()) {
-                s1.forEach(snap => {
-                    const data = snap.val();
-
-                    document.getElementById(data.id)
-
-                    if (document.getElementById(data.id)) {
-                        document.getElementById(data.id).style.background = "#00dd0d"
-                    }
-
-                })
-
-            }
-        })
-
-    }, [livrosList])
-
-    useEffect(() => {
-
-
-        const livros = ref(realtime, "QUESTOES/LIVROS2/" + sessionStorage.getItem('livroIdz'));
-
-
         onValue(livros, (snapshot) => {
             var ll = []
             snapshot.forEach(snap => {
@@ -77,18 +52,26 @@ const Capitulos = () => {
 
             setLivrosList(ll)
 
+        }, {
+            onlyOnce: true
         });
-
-
     }, []);
 
-    const handleClickCapitulos = (id, questao, link) => {
-        sessionStorage.setItem('capituloId', id);
-        sessionStorage.setItem('questao', questao);
-        sessionStorage.setItem('link', link);
-        sessionStorage.setItem('caminho', "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/"
-            + sessionStorage.getItem('id') + "/LIVROS2/" + sessionStorage.getItem('livroIdz') + "/" + id);
-        navigate('/livros/capitulos/seletor');}
+    const handleClickAtividades = (id, nome) => {
+        sessionStorage.setItem("especId", id);
+        sessionStorage.setItem("origem", "edicao");
+        sessionStorage.setItem("nomeLivro", nome);
+        sessionStorage.setItem("titulo", "Especialidade - " + nome)
+        sessionStorage.setItem("veio", "especialidade")
+
+
+        sessionStorage.setItem("questionResponse", "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') +
+            "/ESPECIALIDADES/" + sessionStorage.getItem("categoriaId") + "/" + id)
+        sessionStorage.setItem("questionPatchy", "QUESTOES/ESPECIALIDADES/" + sessionStorage.getItem("categoriaId") + "/" + id)
+
+        navigate('../', { replace: true });}
+
+
 
 
     return (
@@ -106,7 +89,7 @@ const Capitulos = () => {
                         </IconButton>
 
                         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                            Clube {clube} (Livro - {sessionStorage.getItem("nomeLivroz")})
+                            Clube {clube} (Especialidades)
                         </Typography>
 
 
@@ -117,12 +100,12 @@ const Capitulos = () => {
                 <Box id={"corpo"} sx={{flexGrow: 1, margin: 2}}>
                     <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
                         {livrosList.map((livrox, i) => (
-                            <Grid justifyContent="flex-end" item xs={12} key={i}>
-                                <Item id ={livrox.id} className={"xx"} onClick={() => {
-                                    handleClickCapitulos(livrox.id, livrox.questão, livrox.link)
+                            <Grid justifyContent="flex-end" item xs={2} key={i}>
+                                <Item className={"x"} onClick={() => {
+                                    handleClickAtividades(livrox.id, livrox.nome)
                                 }}>
-                                    <div className="title">{livrox.questão}</div>
-                                    <div className="desc">{livrox.descricao}</div>
+                                    <img src={livrox.enderecoImagem} alt="Ideais" width="250" height="300"></img>
+                                    <div className="desc">{livrox.nome}</div>
                                 </Item>
                             </Grid>
                         ))}
@@ -134,4 +117,4 @@ const Capitulos = () => {
     );
 
 }
-export default Capitulos
+export default Especialidades
