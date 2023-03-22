@@ -23,6 +23,12 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 const Pdf = () => {
 
+    useEffect(() => {
+        if (!sessionStorage.getItem('id')) {
+            navigate('/', { replace: true });
+        }
+    }, [])
+
 
     const nome = sessionStorage.getItem("nome")
     const clube = sessionStorage.getItem("clube")

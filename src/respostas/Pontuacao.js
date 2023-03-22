@@ -15,6 +15,12 @@ import AddIcon from "@mui/icons-material/Check";
 
 const Pontuacao = () => {
 
+    useEffect(() => {
+        if (!sessionStorage.getItem('id')) {
+            navigate('/', { replace: true });
+        }
+    }, [])
+
 
     const nome = sessionStorage.getItem("nome")
     const clube = sessionStorage.getItem("clube")

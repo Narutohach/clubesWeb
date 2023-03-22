@@ -17,8 +17,15 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/ArrowBack";
 import {useNavigate} from "react-router-dom";
+import {useEffect} from "react";
 
 const Seletor = () => {
+
+    useEffect(() => {
+        if (!sessionStorage.getItem('id')) {
+            navigate('/', { replace: true });
+        }
+    }, [])
 
 
     const nome = sessionStorage.getItem("nome")

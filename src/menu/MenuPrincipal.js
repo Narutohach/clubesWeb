@@ -14,8 +14,15 @@ import {AppBar, Toolbar} from "@mui/material";
 import Typography from '@mui/material/Typography';
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from '@mui/icons-material/Logout';
+import {useEffect} from "react";
 
 const MenuPrincipal = () => {
+
+    useEffect(() => {
+        if (!sessionStorage.getItem('id')) {
+            navigate('/', { replace: true });
+        }
+    }, [])
 
 
     const nome = sessionStorage.getItem("nome")

@@ -18,6 +18,12 @@ import {Stack} from "@mui/system";
 
 const Texto = () => {
 
+    useEffect(() => {
+        if (!sessionStorage.getItem('id')) {
+            navigate('/', { replace: true });
+        }
+    }, [])
+
 
     const nome = sessionStorage.getItem("nome")
     const clube = sessionStorage.getItem("clube")

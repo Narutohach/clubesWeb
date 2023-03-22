@@ -23,11 +23,10 @@ const TextoAnexo = () => {
     const {passa} = state;
 
 
-    const nome = sessionStorage.getItem("nome")
     const clube = sessionStorage.getItem("clube")
 
     useEffect(() => {
-        if (!sessionStorage.getItem("clubesadasd")) {
+        if (!sessionStorage.getItem('id')) {
             navigate('/', { replace: true });
         }
     }, [])

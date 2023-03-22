@@ -16,6 +16,12 @@ import {realtime} from "../firebase_setup/firebase";
 
 const Data = () => {
 
+    useEffect(() => {
+        if (!sessionStorage.getItem('id')) {
+            navigate('/', { replace: true });
+        }
+    }, [])
+
 
     const nome = sessionStorage.getItem("nome")
     const clube = sessionStorage.getItem("clube")

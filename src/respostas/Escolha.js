@@ -16,6 +16,12 @@ import Grid from "@mui/material/Grid";
 
 const Escolha = () => {
 
+    useEffect(() => {
+        if (!sessionStorage.getItem('id')) {
+            navigate('/', { replace: true });
+        }
+    }, [])
+
 
     const nome = sessionStorage.getItem("nome")
     const clube = sessionStorage.getItem("clube")

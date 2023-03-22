@@ -11,8 +11,15 @@ import {useNavigate} from "react-router-dom";
 import YouTube from "react-youtube";
 import {realtime} from "../firebase_setup/firebase";
 import {ref, set} from "@firebase/database";
+import {useEffect} from "react";
 
 const Video = () => {
+
+    useEffect(() => {
+        if (!sessionStorage.getItem('id')) {
+            navigate('/', { replace: true });
+        }
+    }, [])
 
 
     const nome = sessionStorage.getItem("nome")
