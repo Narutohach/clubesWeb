@@ -10,14 +10,15 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/ArrowBack";
 import {useNavigate} from "react-router-dom";
-import {onValue, ref} from "@firebase/database";
-import {realtime} from "../firebase_setup/firebase";
+import {onValue, ref, set} from "@firebase/database";
+import {firestore, realtime} from "../firebase_setup/firebase";
+import {doc, getDoc} from "@firebase/firestore";
 
 const Capitulos = () => {
 
     useEffect(() => {
         if (!sessionStorage.getItem('id')) {
-            navigate('/', { replace: true });
+            navigate('/', {replace: true});
         }
     }, [])
 
@@ -40,33 +41,8 @@ const Capitulos = () => {
 
 
     const [livrosList, setLivrosList] = useState([]);
-    const [ok, setOk] = useState(true);
+    const [value, setValue] = useState("0");
 
-
-    useEffect(() => {
-        const resposta = ref(realtime, "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') + "/LIVROS2/" + sessionStorage.getItem('livroIdz'));
-
-        // alert("RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') + "/LIVROS2/" + sessionStorage.getItem('livroIdz') + "/" + data.id)
-
-
-        onValue(resposta, (s1) => {
-
-            if (s1.exists()) {
-                s1.forEach(snap => {
-                    const data = snap.val();
-
-                    document.getElementById(data.id)
-
-                    if (document.getElementById(data.id)) {
-                        document.getElementById(data.id).style.background = "#00dd0d"
-                    }
-
-                })
-
-            }
-        })
-
-    }, [livrosList])
 
     useEffect(() => {
 
@@ -94,7 +70,150 @@ const Capitulos = () => {
         sessionStorage.setItem('link', link);
         sessionStorage.setItem('caminho', "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/"
             + sessionStorage.getItem('id') + "/LIVROS2/" + sessionStorage.getItem('livroIdz') + "/" + id);
-        navigate('/livros/capitulos/seletor');}
+        navigate('/livros/capitulos/seletor');
+    }
+
+    useEffect(() => {
+            const resposta = ref(realtime, "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') + "/LIVROS2/" + sessionStorage.getItem('livroIdz'));
+
+
+            onValue(resposta, (s1) => {
+
+                if (s1.exists()) {
+
+                    let lx = 0;
+
+                    s1.forEach(snap => {
+                            const data = snap.val();
+
+
+                            if (document.getElementById(data.id)) {
+                                if (!data.aprovado && !data.reprovado) {
+                                    document.getElementById(data.id).style.background = "yellow";
+                                } else if (!data.aprovado && data.reprovado) {
+                                    document.getElementById(data.id).style.background = "red";
+                                } else {
+
+                                    lx = lx + 1;
+                                    document.getElementById(data.id).style.background = "#00dd0d";
+                                }
+                            }
+
+                        }
+                    )
+
+                    var valor = ((lx * 100) / livrosList.length).toFixed(0);
+
+
+                    if (document.getElementById("porcento")) {
+                        document.getElementById("porcento").innerHTML = valor + "%"
+                    }
+
+                    if (valor == "100") {
+
+                        const fetchPost = async () => {
+
+                            const lly = []
+
+                            const logins = doc(firestore, "LOGINS", sessionStorage.getItem('id'), "AUXILIAR", "AUXILIAR");
+
+                            const data = await getDoc(logins);
+
+                            if (data.data().amigo) {
+                                lly.push(1)
+                            }
+
+                            if (data.data().companheiro) {
+                                lly.push(2)
+                            }
+
+                            if (data.data().pesquisador) {
+                                lly.push(3)
+                            }
+
+                            if (data.data().pioneiro) {
+                                lly.push(4)
+                            }
+
+                            if (data.data().excursionista) {
+                                lly.push(5)
+                            }
+
+                            if (data.data().guia) {
+                                lly.push(6)
+                            }
+
+                            lly.forEach((i) => {
+
+                                    const resposta = ref(realtime, "QUESTOES/CLASSES/" + i);
+
+
+                                    onValue(resposta, (s1) => {
+
+                                        if (s1.exists()) {
+
+                                            s1.forEach(snap => {
+                                                const data = snap.val();
+                                                if (data.tipo === 13 && data.leitura === sessionStorage.getItem('livroIdz')) {
+
+                                                    const referencia = ref(realtime, "RESPOSTAS/" +
+                                                        sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') +
+                                                        "/CLASSES/" + i + "/" + data.id);
+
+                                                    const today = new Date();
+                                                    var mes = 0;
+                                                    var dia = 0;
+
+                                                    if ((today.getMonth() + 1) < 10) {
+                                                        mes = "0" + (today.getMonth() + 1)
+                                                    } else {
+                                                        mes = (today.getMonth() + 1)
+                                                    }
+                                                    if ((today.getDate()) < 10) {
+                                                        dia = "0" + (today.getDate())
+                                                    } else {
+                                                        dia = (today.getDate())
+                                                    }
+
+                                                    var hora = dia + "" + mes + "" + today.getFullYear() + "_" + today.getHours() + "" + today.getMinutes() + "" + today.getSeconds()
+
+                                                    set(referencia,
+                                                        {
+                                                            id: data.id,
+                                                            concluido: true,
+                                                            data: hora,
+                                                            tipo: 13,
+                                                            aprovado: true,
+                                                            reprovado: false
+                                                        }
+                                                    )
+
+                                                }
+                                            })
+
+                                        }
+                                    })
+
+
+                                }
+                            )
+                        }
+
+                        fetchPost();
+
+                    }
+
+                }
+            })
+
+        }, [livrosList]
+    )
+
+
+// useEffect(() => {
+//     if (value === 25)
+//     alert(value)
+// }, [value])
 
 
     return (
@@ -115,6 +234,12 @@ const Capitulos = () => {
                             Clube {clube} (Livro - {sessionStorage.getItem("nomeLivroz")})
                         </Typography>
 
+                        <div>
+                            <Typography id="porcento" variant="h6" component="div" sx={{flexGrow: 1}}>
+                                0%
+                            </Typography>
+                        </div>
+
 
                     </Toolbar>
                 </AppBar>
@@ -124,7 +249,7 @@ const Capitulos = () => {
                     <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
                         {livrosList.map((livrox, i) => (
                             <Grid justifyContent="flex-end" item xs={12} key={i}>
-                                <Item id ={livrox.id} className={"xx"} onClick={() => {
+                                <Item id={livrox.id} className={"xx"} onClick={() => {
                                     handleClickCapitulos(livrox.id, livrox.questão, livrox.link)
                                 }}>
                                     <div className="title">{livrox.questão}</div>

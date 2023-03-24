@@ -5,15 +5,18 @@ import Login from './Login';
 import MenuPrincipal from "./menu/MenuPrincipal";
 import Ideais from "./ideais/Ideais";
 import Classes from "./classes/Classes";
+import Agenda from "./agenda/Agenda";
 import ClassCateg from "./classes/Categoria";
 import Livros from "./livros/LivrosSelector";
 import CategEspec from "./especialidades/categoria";
 import Especialidades from "./especialidades/especialidades";
 import EspecActiviti from "./especialidades/atividades";
+import EspecActivitiX from "./especialidades/EspecActivitiX";
 import Capitulos from "./livros/Capitulos"
 import Seletor from "./livros/Seletor"
 import Video from "./respostas/Video"
 import TextoBiblico from "./respostas/TextoBiblico"
+import MultiEspec from "./respostas/MultiEspec"
 import Pdf from "./respostas/Pdf"
 import Texto from "./respostas/Text"
 import TextoAnexo from "./respostas/TextAnex"
@@ -31,10 +34,12 @@ const App = () => (
             <Route path="/menu" element={<MenuPrincipal />} />
             <Route path="/ideais" element={<Ideais />} />
             <Route path="/classes" element={<Classes />} />
+            <Route path="/agenda" element={<Agenda />} />
             <Route path="/classes/categoria" element={<ClassCateg />} />
             <Route path="/categoriaespecialidade" element={<CategEspec />} />
             <Route path="/especialidades/especialidades" element={<Especialidades />} />
             <Route path="/especialidades/atividades" element={<EspecActiviti />} />
+            <Route path="/especialidades/atividadesespec" element={<EspecActivitiX />} />
             <Route path="/livros" element={<Livros />} />
             <Route path="/livros/capitulos" element={<Capitulos />} />
             <Route path="/livros/capitulos/seletor" element={<Seletor />} />
@@ -48,6 +53,7 @@ const App = () => (
             <Route path="/respostas/pontuacao" element={<Pontuacao />} />
             <Route path="/respostas/biblia" element={<TextoBiblico />} />
             <Route path="/respostas/escolha" element={<Escolha />} />
+            <Route path="/respostas/multiespec" element={<MultiEspec />} />
             <Route path="/lenco" element={<Lenco />} />
         </Routes>
     </Router>

@@ -9,18 +9,22 @@ import classes from '../imagens/ic_classes.svg';
 import logoIdeais from '../imagens/ic_ideais.svg';
 import logoLivros from '../imagens/ic_livros.svg';
 import logoLenco from '../imagens/lenco_removebg.png';
+import logoCavaleiro from '../imagens/escudocvfdesbrava.png';
+import logoConfig from '../imagens/ic_configuracoes_1.svg';
+import logoAgenda from '../imagens/ic_agenda_1.svg';
 import {useNavigate} from "react-router-dom";
 import {AppBar, Toolbar} from "@mui/material";
 import Typography from '@mui/material/Typography';
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from '@mui/icons-material/Logout';
+import MenuIcon from '@mui/icons-material/Menu';
 import {useEffect} from "react";
 
 const MenuPrincipal = () => {
 
     useEffect(() => {
         if (!sessionStorage.getItem('id')) {
-            navigate('/', { replace: true });
+            window.location = '/';
         }
     }, [])
 
@@ -35,7 +39,7 @@ const MenuPrincipal = () => {
         padding: theme.spacing(2),
         textAlign: 'center',
         color: theme.palette.text.secondary,
-        boxShadow: 10
+        boxShadow: "10px 6px 5px grey"
     }));
 
     const navigate = useNavigate();
@@ -46,6 +50,13 @@ const MenuPrincipal = () => {
     const handleClickIdeais = () => navigate('/ideais');
     const handleClickLivros = () => navigate('/livros');
     const handleClickLenco = () => navigate('/lenco');
+
+    const handleClickAgenda = () => navigate('/agenda');
+
+    const handleClickCavaleiro = () => {
+        sessionStorage.setItem('classe', 15);
+        navigate('/classes/Categoria');
+    }
     const goBack = () => {
         navigate(-1);
     }
@@ -60,6 +71,10 @@ const MenuPrincipal = () => {
             <Box sx={{flexGrow: 1}}>
                 <AppBar position="static" enableColorOnDark>
                     <Toolbar>
+
+                        {/*<IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>*/}
+                        {/*    <MenuIcon />*/}
+                        {/*</IconButton>*/}
 
                         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                             Clube {clube}
@@ -86,7 +101,8 @@ const MenuPrincipal = () => {
                             <Item className={"x"} onClick={() => {
                                 handleClickClasses()
                             }}>
-                                <img src={classes} alt="Especialidades" width="300" height="200"></img>
+                                <img src={classes} alt="Especialidades" width="300" height="200"
+                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
                                 <div className="desc">Classes</div>
                             </Item>
                         </Grid>
@@ -96,7 +112,8 @@ const MenuPrincipal = () => {
                             <Item className={"x"} onClick={() => {
                                 handleClickEspecialidades()
                             }}>
-                                <img src={espec} alt="Especialidades" width="300" height="200"></img>
+                                <img src={espec} alt="Especialidades" width="300" height="200"
+                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
                                 <div className="desc">Especialidades</div>
                             </Item>
                         </Grid>
@@ -105,7 +122,8 @@ const MenuPrincipal = () => {
                             <Item className={"x"} onClick={() => {
                                 handleClickIdeais()
                             }}>
-                                <img src={logoIdeais} alt="Ideais" width="300" height="200"></img>
+                                <img src={logoIdeais} alt="Ideais" width="300" height="200"
+                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
                                 <div className="desc">Ideais</div>
                             </Item>
                         </Grid>
@@ -114,7 +132,8 @@ const MenuPrincipal = () => {
                             <Item className={"x"} onClick={() => {
                                 handleClickLivros()
                             }}>
-                                <img src={logoLivros} alt="Livros" width="300" height="200"></img>
+                                <img src={logoLivros} alt="Livros" width="300" height="200"
+                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
                                 <div className="desc">Livros</div>
                             </Item>
                         </Grid>
@@ -123,10 +142,44 @@ const MenuPrincipal = () => {
                             <Item className={"x"} onClick={() => {
                                 handleClickLenco()
                             }}>
-                                <img src={logoLenco} alt="Lenço" width="300" height="200"></img>
+                                <img src={logoLenco} alt="Lenço" width="300" height="200"
+                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
                                 <div className="desc">Prova do Lenço</div>
                             </Item>
                         </Grid>
+
+
+                        <Grid item xs={2} key={4}>
+                            <Item className={"x"} onClick={() => {
+                                handleClickCavaleiro()
+                            }}>
+                                <img src={logoCavaleiro} alt="Cavaleiro Fiel" width="300" height="200"
+                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
+                                <div className="desc">Cavaleiro Fiel</div>
+                            </Item>
+                        </Grid>
+
+                        {/*<Grid item xs={2} key={4}>*/}
+                        {/*    <Item className={"x"} onClick={() => {*/}
+                        {/*        handleClickCavaleiro()*/}
+                        {/*    }}>*/}
+                        {/*        <img src={logoConfig} alt="Cavaleiro Fiel" width="300" height="200"*/}
+                        {/*             style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>*/}
+                        {/*        <div className="desc">Configurações</div>*/}
+                        {/*    </Item>*/}
+                        {/*</Grid>*/}
+
+                        <Grid item xs={2} key={4}>
+                            <Item className={"x"} onClick={() => {
+                                handleClickAgenda()
+                            }}>
+                                <img src={logoAgenda} alt="Agenda" width="300" height="200"
+                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
+                                <div className="desc">Agenda do Clube</div>
+                            </Item>
+                        </Grid>
+
+
                     </Grid>
                 </Box>
             </div>

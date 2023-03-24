@@ -12,6 +12,8 @@ import DeleteIcon from "@mui/icons-material/ArrowBack";
 import {useNavigate} from "react-router-dom";
 import {onValue, ref, query, orderByChild, equalTo} from "@firebase/database";
 import {realtime} from "../firebase_setup/firebase";
+import CircularProgress from '@mui/material/CircularProgress';
+import PropTypes from "prop-types";
 
 
 const Categoria = () => {
@@ -37,9 +39,56 @@ const Categoria = () => {
 
     const [livrosList, setLivrosList] = useState([]);
     const [livrosList1, setLivrosList1] = useState([]);
+    const [livrosList2, setLivrosList2] = useState([]);
     const [ll, setLl] = useState([]);
     const [llx, setLlx] = useState(0);
 
+    const [quests, setQuests] = useState([]);
+    const [resp, setResp] = useState([]);
+
+
+
+    useEffect(() => {
+
+        const livros = ref(realtime, "QUESTOES/CLASSES/" + classe);
+
+        // const qq = query(livros, orderByChild("categoria"), equalTo(i.unidade))
+
+
+        onValue(livros, (snapshot) => {
+            var ll = []
+            snapshot.forEach(snap => {
+                const data = snap.val();
+                ll.push(data)
+            })
+
+            setQuests(ll);
+
+        });
+
+    }, [classe])
+
+
+    useEffect(() => {
+
+        const livros = ref(realtime, "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') +
+            "/CLASSES/" + classe);
+
+        // const qq = query(livros, orderByChild("categoria"), equalTo(i.unidade))
+
+
+        onValue(livros, (snapshot) => {
+            var ll = []
+            snapshot.forEach(snap => {
+                const data = snap.val();
+                ll.push(data)
+            })
+
+            setResp(ll);
+
+        });
+
+    }, [quests])
 
     useEffect(() => {
 
@@ -59,31 +108,77 @@ const Categoria = () => {
         });
 
 
-    }, []);
+    }, [resp]);
+
 
     useEffect(() => {
-        livrosList.forEach((i) => {
-            const livros = ref(realtime, "QUESTOES/CLASSES/" + classe);
+        var ll = []
+        livrosList.forEach((i) =>{
 
-            const qq = query(livros, orderByChild("categoria"), equalTo(i.unidade))
+            var j = i;
 
+            if (quests.some(e => e.categoria === i.unidade)) {
+                var questconta = quests.filter(e => (e.categoria === i.unidade));
+                var respostt = quests.filter(e => resp.some(item => item.id === e.id && item.aprovado == true && e.categoria === i.unidade));
 
-            onValue(qq, (snapshot) => {
-                snapshot.forEach(snap => {
-                    const data = snap.val();
-                    if (!ll.includes(i)) {
-                        ll.push(i)
-                        setLlx(llx + 1)
-                    }
-                })
+                j.qtde = ((respostt.length * 100)/questconta.length)
+                ll.push(j)
+            }
 
-            });
         })
-    }, [classe, livrosList])
-
-    useEffect(() => {
         setLivrosList1(ll)
-    }, [llx])
+    }, [livrosList])
+
+
+
+
+    // useEffect(() => {
+    //     livrosList.forEach((i) => {
+    //         const livros = ref(realtime, "QUESTOES/CLASSES/" + classe);
+    //
+    //         const qq = query(livros, orderByChild("categoria"), equalTo(i.unidade))
+    //
+    //
+    //         onValue(qq, (snapshot) => {
+    //             snapshot.forEach(snap => {
+    //                 const data = snap.val();
+    //                 i.ccq = snapshot.size;
+    //
+    //                 const respostax = ref(realtime, "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') +
+    //                     "/CLASSES/" + classe);
+    //
+    //                 const qqx = query(respostax, orderByChild("aprovado"), equalTo(true))
+    //
+    //
+    //                 if (!ll.includes(i)) {
+    //                     ll.push(i)
+    //                     setLlx(llx + 1)
+    //                 }
+    //             })
+    //
+    //         });
+    //     })
+    // }, [classe, livrosList])
+
+    // useEffect(() => {
+    //     setLivrosList1(ll)
+    // }, [ll, llx])
+
+    // useEffect(() => {
+    //     livrosList1.forEach((i) => {
+    //         const livros = ref(realtime, "QUESTOES/CLASSES/" + classe);
+    //
+    //         const qq = query(livros, orderByChild("categoria"), equalTo(i.unidade))
+    //
+    //         var xc = i
+    //
+    //         onValue(qq, (snapshot) => {
+    //             xc.ccq = snapshot.size
+    //
+    //         });
+    //     })
+    //
+    // }, [livrosList1])
 
     const handleClick = (livrox, nome) => {
         sessionStorage.setItem("categoriaId", livrox);
@@ -97,6 +192,71 @@ const Categoria = () => {
 
         navigate('/especialidades/atividades');
     }
+
+
+    const [qst, setQst] = useState(0);
+    // calcula o tanto de questões
+    useEffect(() => {
+        const resposta = ref(realtime, "QUESTOES/CLASSES/" + classe);
+        onValue(resposta, (s1) => {
+            if (s1.exists()) {
+                setQst(s1.size)
+            }
+        })
+
+    }, [livrosList])
+
+    // calcula as respostas
+    useEffect(() => {
+        const resposta = ref(realtime, "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') +
+            "/CLASSES/" + classe);
+
+        const qq = query(resposta, orderByChild("aprovado"), equalTo(true))
+
+        onValue(qq, (s1) => {
+            if (s1.exists()) {
+                if (document.getElementById("porcento")) {
+                    document.getElementById("porcento").innerHTML = ((s1.size * 100) / qst).toFixed(0) + "%"
+                }
+            }
+        })
+
+    }, [classe, qst])
+
+
+
+    function CircularProgressWithLabel(props) {
+        return (
+            <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+                <CircularProgress sx={{color: '#227C70'}} variant="determinate" {...props} />
+                <Box
+                    sx={{
+                        top: 0,
+                        left: 0,
+                        bottom: 0,
+                        right: 0,
+                        position: 'absolute',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <Typography variant="caption" component="div" color="text.secondary">
+                        {`${Math.round(props.value)}%`}
+                    </Typography>
+                </Box>
+            </Box>
+        );
+    }
+
+    CircularProgressWithLabel.propTypes = {
+        /**
+         * The value of the progress indicator for the determinate variant.
+         * Value between 0 and 100.
+         * @default 0
+         */
+        value: PropTypes.number.isRequired,
+    };
 
 
     return (
@@ -118,6 +278,12 @@ const Categoria = () => {
                         </Typography>
 
                         <div>
+                            <Typography id="porcento" variant="h6" component="div" sx={{flexGrow: 1}}>
+                                0%
+                            </Typography>
+                        </div>
+
+                        <div>
 
                         </div>
 
@@ -133,7 +299,15 @@ const Categoria = () => {
                                 <Item id={livrox.id} className={"xx"} onClick={() => {
                                     handleClick(livrox.id, livrox.unidade)
                                 }}>
-                                    <div className="title">{livrox.unidade}</div>
+                                    <div className="box"
+                                         style={{display: "flex", flexWrap: "wrap", justifyContent: "space-between"}}>
+                                        <div className="title">{livrox.unidade}</div>
+                                        <div className="title" id={"perc" + livrox.id}
+                                             style={{justifyContent: "center", alignItems: "center",  position: "relative", display: "inline-block"}}>
+                                            <CircularProgressWithLabel value={livrox.qtde} />
+                                        </div>
+
+                                    </div>
                                 </Item>
                             </Grid>
                         ))}

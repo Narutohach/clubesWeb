@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import '../menu/MenuPrincipal.css';
 import {experimentalStyled as styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -9,23 +10,18 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/ArrowBack";
 import {useNavigate} from "react-router-dom";
-import {getDatabase, ref, onValue} from "@firebase/database"
-import {realtime} from "../firebase_setup/firebase"
-import {useEffect, useState} from "react";
-import MenuItem from "@mui/material/MenuItem";
+import {onValue, ref, query, orderByChild, equalTo} from "@firebase/database";
+import {realtime} from "../firebase_setup/firebase";
+import CircularProgress from '@mui/material/CircularProgress';
+import PropTypes from "prop-types";
 
 
-const Especialidades = () => {
-
-    useEffect(() => {
-        if (!sessionStorage.getItem('id')) {
-            navigate('/', { replace: true });
-        }
-    }, [])
+const Agenda = () => {
 
 
     const nome = sessionStorage.getItem("nome")
     const clube = sessionStorage.getItem("clube")
+    const classe = sessionStorage.getItem("classe")
 
 
     const Item = styled(Paper)(({theme}) => ({
@@ -41,14 +37,21 @@ const Especialidades = () => {
     }
 
 
-
-
-
     const [livrosList, setLivrosList] = useState([]);
+    const [livrosList1, setLivrosList1] = useState([]);
+
+    const [quests, setQuests] = useState([]);
+    const [resp, setResp] = useState([]);
 
 
-    const livros = ref(realtime, "ESPECIALIDADES/" + sessionStorage.getItem("categoriaId"));
+
     useEffect(() => {
+
+        const livros = ref(realtime, "AGENDA/" + sessionStorage.getItem('clubeId'));
+
+
+
+
         onValue(livros, (snapshot) => {
             var ll = []
             snapshot.forEach(snap => {
@@ -56,26 +59,16 @@ const Especialidades = () => {
                 ll.push(data)
             })
 
-            setLivrosList(ll)
+            setLivrosList1(ll);
 
-        }, {
-            onlyOnce: true
         });
-    }, []);
 
-    const handleClickAtividades = (id, nome) => {
-        sessionStorage.setItem("especIdE", id);
-        sessionStorage.setItem("origemE", "edicao");
-        sessionStorage.setItem("nomeLivroE", nome);
-        sessionStorage.setItem("tituloE", "Especialidade - " + nome)
-        sessionStorage.setItem("veioE", "especialidade")
+    }, [])
 
 
-        sessionStorage.setItem("questionResponseE", "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') +
-            "/ESPECIALIDADES/" + sessionStorage.getItem("categoriaId") + "/" + id)
-        sessionStorage.setItem("questionPatchyE", "QUESTOES/ESPECIALIDADES/" + sessionStorage.getItem("categoriaId") + "/" + id)
 
-        navigate('/especialidades/atividadesespec');}
+
+
 
 
     return (
@@ -93,8 +86,13 @@ const Especialidades = () => {
                         </IconButton>
 
                         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                            Clube {clube} (Especialidades)
+                            Clube {clube} (Agenda)
                         </Typography>
+
+
+                        <div>
+
+                        </div>
 
 
                     </Toolbar>
@@ -103,13 +101,12 @@ const Especialidades = () => {
             <div>
                 <Box id={"corpo"} sx={{flexGrow: 1, margin: 2}}>
                     <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
-                        {livrosList.map((livrox, i) => (
-                            <Grid justifyContent="flex-end" item xs={2} key={i}>
-                                <Item className={"x"} onClick={() => {
-                                    handleClickAtividades(livrox.id, livrox.nome)
-                                }}>
-                                    <img src={livrox.enderecoImagem} alt="Ideais" width="250" height="300"></img>
-                                    <div className="desc">{livrox.nome}</div>
+                        {livrosList1.map((livrox, i) => (
+                            <Grid justifyContent="flex-end" item xs={12} key={i}>
+                                <Item id={livrox.id} className={"xx"}>
+                                    <div className="title">{livrox.titulo}</div>
+                                    <div className="title">Data Inicial: {livrox.datade.date}/{livrox.datade.month + 1}/{livrox.datade.year + 1900}</div>
+                                    <div className="title">Data Final: {livrox.datapara.date}/{livrox.datapara.month + 1}/{livrox.datapara.year + 1900}</div>
                                 </Item>
                             </Grid>
                         ))}
@@ -121,4 +118,4 @@ const Especialidades = () => {
     );
 
 }
-export default Especialidades
+export default Agenda

@@ -18,11 +18,7 @@ import {Stack} from "@mui/system";
 
 const Texto = () => {
 
-    useEffect(() => {
-        if (!sessionStorage.getItem('id')) {
-            navigate('/', { replace: true });
-        }
-    }, [])
+
 
 
     const nome = sessionStorage.getItem("nome")
@@ -80,6 +76,12 @@ const Texto = () => {
     const goBack = () => {
         navigate(-1);
     }
+
+    useEffect(() => {
+        if (!sessionStorage.getItem('id')) {
+            navigate('/', { replace: true });
+        }
+    }, [])
 
 
     const [livrosList, setLivrosList] = useState([]);

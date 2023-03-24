@@ -15,11 +15,11 @@ import {useEffect, useState} from "react";
 import MenuItem from "@mui/material/MenuItem";
 
 
-const Especialidades = () => {
+const MultiEspec = () => {
 
     useEffect(() => {
         if (!sessionStorage.getItem('id')) {
-            navigate('/', { replace: true });
+            navigate('/', {replace: true});
         }
     }, [])
 
@@ -41,29 +41,54 @@ const Especialidades = () => {
     }
 
 
-
-
-
     const [livrosList, setLivrosList] = useState([]);
 
-
-    const livros = ref(realtime, "ESPECIALIDADES/" + sessionStorage.getItem("categoriaId"));
     useEffect(() => {
-        onValue(livros, (snapshot) => {
+        const questao = ref(realtime, sessionStorage.getItem("questionPatch"));
+
+        onValue(questao, (snapshot) => {
+
+            const data = snapshot.val();
+
             var ll = []
-            snapshot.forEach(snap => {
-                const data = snap.val();
-                ll.push(data)
+            ll = data.listaEspecialidades
+
+            var tt = []
+
+            ll.forEach((l, i) => {
+                tt.push(l)
+                console.log(l)
             })
 
-            setLivrosList(ll)
+
+            setLivrosList(tt)
 
         }, {
             onlyOnce: true
         });
-    }, []);
 
-    const handleClickAtividades = (id, nome) => {
+    }, [])
+
+
+    //
+    //
+    // const livros = ref(realtime, "ESPECIALIDADES/" + sessionStorage.getItem("categoriaId"));
+    // useEffect(() => {
+    //     onValue(livros, (snapshot) => {
+    //         var ll = []
+    //         snapshot.forEach(snap => {
+    //             const data = snap.val();
+    //             ll.push(data)
+    //         })
+    //
+    //         setLivrosList(ll)
+    //
+    //     }, {
+    //         onlyOnce: true
+    //     });
+    // }, []);
+
+    const handleClickAtividades = (id, nome, categoria) => {
         sessionStorage.setItem("especIdE", id);
         sessionStorage.setItem("origemE", "edicao");
         sessionStorage.setItem("nomeLivroE", nome);
@@ -72,10 +97,11 @@ const Especialidades = () => {
 
 
         sessionStorage.setItem("questionResponseE", "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') +
-            "/ESPECIALIDADES/" + sessionStorage.getItem("categoriaId") + "/" + id)
-        sessionStorage.setItem("questionPatchyE", "QUESTOES/ESPECIALIDADES/" + sessionStorage.getItem("categoriaId") + "/" + id)
+            "/ESPECIALIDADES/" + categoria + "/" + id)
+        sessionStorage.setItem("questionPatchyE", "QUESTOES/ESPECIALIDADES/" + categoria + "/" + id)
 
-        navigate('/especialidades/atividadesespec');}
+        navigate('/especialidades/atividadesespec');
+    }
 
 
     return (
@@ -106,7 +132,7 @@ const Especialidades = () => {
                         {livrosList.map((livrox, i) => (
                             <Grid justifyContent="flex-end" item xs={2} key={i}>
                                 <Item className={"x"} onClick={() => {
-                                    handleClickAtividades(livrox.id, livrox.nome)
+                                    handleClickAtividades(livrox.id, livrox.nome, livrox.categoria)
                                 }}>
                                     <img src={livrox.enderecoImagem} alt="Ideais" width="250" height="300"></img>
                                     <div className="desc">{livrox.nome}</div>
@@ -121,4 +147,4 @@ const Especialidades = () => {
     );
 
 }
-export default Especialidades
+export default MultiEspec

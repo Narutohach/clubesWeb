@@ -10,10 +10,11 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/ArrowBack";
 import {useNavigate} from "react-router-dom";
-import {equalTo, onValue, orderByChild, query, ref} from "@firebase/database";
-import {realtime} from "../firebase_setup/firebase";
+import {equalTo, onValue, orderByChild, query, ref, set} from "@firebase/database";
+import {firestore, realtime} from "../firebase_setup/firebase";
+import {doc, getDoc} from "@firebase/firestore";
 
-const Atividades = () => {
+const EspecActivitiX = () => {
 
     useEffect(() => {
         if (!sessionStorage.getItem('id')) {
@@ -24,8 +25,8 @@ const Atividades = () => {
 
     const nome = sessionStorage.getItem("nome");
     const clube = sessionStorage.getItem("clube");
-    const caminhoPergunta = sessionStorage.getItem("questionPatchy");
-    const caminhoResposta = sessionStorage.getItem("questionResponse");
+    const caminhoPergunta = sessionStorage.getItem("questionPatchyE");
+    const caminhoResposta = sessionStorage.getItem("questionResponseE");
 
 
     const Item = styled(Paper)(({theme}) => ({
@@ -47,8 +48,6 @@ const Atividades = () => {
 
     useEffect(() => {
         const resposta = ref(realtime, caminhoResposta);
-
-        // alert("RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') + "/LIVROS2/" + sessionStorage.getItem('livroId') + "/" + data.id)
 
 
         onValue(resposta, (s1) => {
@@ -79,20 +78,6 @@ const Atividades = () => {
     }, [livrosList])
 
     useEffect(() => {
-        if (sessionStorage.getItem("veio") === "classe") {
-            const qq = ref(realtime, caminhoPergunta);
-            let livros = query(qq, orderByChild("categoria"), equalTo(sessionStorage.getItem("classex")))
-            onValue(livros, (snapshot) => {
-                var ll = []
-                snapshot.forEach(snap => {
-                    const data = snap.val();
-                    ll.push(data)
-                })
-
-                setLivrosList(ll)
-
-            });
-        } else {
             let livros = ref(realtime, caminhoPergunta);
             onValue(livros, (snapshot) => {
                 var ll = []
@@ -104,7 +89,7 @@ const Atividades = () => {
                 setLivrosList(ll)
 
             });
-        }
+
 
 
     }, []);
@@ -157,19 +142,6 @@ const Atividades = () => {
             navigate('/respostas/biblia');
         }
 
-        if (livrox.tipo === 10) {
-            sessionStorage.setItem("especIdE", livrox.leitura);
-            sessionStorage.setItem("origemE", "edicao");
-            sessionStorage.setItem("nomeLivroE", livrox.descricao);
-            sessionStorage.setItem("tituloE", "Especialidade");
-            sessionStorage.setItem("veioE", "especialidade");
-
-            sessionStorage.setItem("questionResponseE", "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') +
-                "/ESPECIALIDADES/" + livrox.livro + "/" + livrox.leitura)
-            sessionStorage.setItem("questionPatchyE", "QUESTOES/ESPECIALIDADES/" + livrox.livro + "/" + livrox.leitura)
-            navigate('/especialidades/atividadesespec')
-        }
-
         if (livrox.tipo === 11) {
             navigate('/respostas/textoanexo', {state: {passa: livrox}});
         }
@@ -185,19 +157,6 @@ const Atividades = () => {
             sessionStorage.setItem("origemz", "leitura");
             sessionStorage.setItem("nomeLivroz", livrox.descricao);
             navigate('/livros/capitulos', { state: { id: 7, color: 'green' } });
-        }
-
-        if (livrox.tipo === 14) {
-            sessionStorage.setItem("especIdE", livrox.leitura);
-            sessionStorage.setItem("origemE", "edicao");
-            sessionStorage.setItem("nomeLivroE", livrox.descricao);
-            sessionStorage.setItem("tituloE", "Especialidade");
-            sessionStorage.setItem("veioE", "especialidade");
-
-            sessionStorage.setItem("questionResponseE", "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') +
-                "/ESPECIALIDADES/" + livrox.livro + "/" + livrox.leitura)
-            sessionStorage.setItem("questionPatchyE", "QUESTOES/ESPECIALIDADES/" + livrox.livro + "/" + livrox.leitura)
-            navigate('/respostas/multiespec')
         }
 
 
@@ -236,8 +195,138 @@ const Atividades = () => {
                     }
                 )
 
+                var valor = ((lx * 100) / livrosList.length).toFixed(0);
                 if (document.getElementById("porcento")) {
-                    document.getElementById("porcento").innerHTML = ((lx * 100) / livrosList.length).toFixed(0) + "%"
+                    document.getElementById("porcento").innerHTML = valor + "%"
+                }
+
+                if (valor == "100") {
+
+                    const fetchPost = async () => {
+
+                        const lly = []
+
+                        const logins = doc(firestore, "LOGINS", sessionStorage.getItem('id'), "AUXILIAR", "AUXILIAR");
+
+                        const data = await getDoc(logins);
+
+                        if (data.data().amigo) {
+                            lly.push(1)
+                        }
+
+                        if (data.data().companheiro) {
+                            lly.push(2)
+                        }
+
+                        if (data.data().pesquisador) {
+                            lly.push(3)
+                        }
+
+                        if (data.data().pioneiro) {
+                            lly.push(4)
+                        }
+
+                        if (data.data().excursionista) {
+                            lly.push(5)
+                        }
+
+                        if (data.data().guia) {
+                            lly.push(6)
+                        }
+
+                        lly.forEach((i) => {
+
+                                const resposta = ref(realtime, "QUESTOES/CLASSES/" + i);
+
+
+                                onValue(resposta, (s1) => {
+
+                                    if (s1.exists()) {
+
+                                        s1.forEach(snap => {
+                                            const data = snap.val();
+                                            if (data.tipo === 10 && data.leitura === sessionStorage.getItem('especIdE')) {
+
+                                                const referencia = ref(realtime, "RESPOSTAS/" +
+                                                    sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') +
+                                                    "/CLASSES/" + i + "/" + data.id);
+
+                                                const today = new Date();
+                                                var mes = 0;
+                                                var dia = 0;
+
+                                                if ((today.getMonth() + 1) < 10) {
+                                                    mes = "0" + (today.getMonth() + 1)
+                                                } else {
+                                                    mes = (today.getMonth() + 1)
+                                                }
+                                                if ((today.getDate()) < 10) {
+                                                    dia = "0" + (today.getDate())
+                                                } else {
+                                                    dia = (today.getDate())
+                                                }
+
+                                                var hora = dia + "" + mes + "" + today.getFullYear() + "_" + today.getHours() + "" + today.getMinutes() + "" + today.getSeconds()
+
+                                                set(referencia,
+                                                    {
+                                                        id: data.id,
+                                                        concluido: true,
+                                                        data: hora,
+                                                        tipo: 13,
+                                                        aprovado: true,
+                                                        reprovado: false
+                                                    }
+                                                )
+
+                                            }
+                                            if (data.tipo === 14 && data.listaEspecialidades.some(e => e.id == sessionStorage.getItem('especIdE'))) {
+
+                                                const referencia = ref(realtime, "RESPOSTAS/" +
+                                                    sessionStorage.getItem('clubeId') + "/" + sessionStorage.getItem('id') +
+                                                    "/CLASSES/" + i + "/" + data.id);
+
+                                                const today = new Date();
+                                                var mes = 0;
+                                                var dia = 0;
+
+                                                if ((today.getMonth() + 1) < 10) {
+                                                    mes = "0" + (today.getMonth() + 1)
+                                                } else {
+                                                    mes = (today.getMonth() + 1)
+                                                }
+                                                if ((today.getDate()) < 10) {
+                                                    dia = "0" + (today.getDate())
+                                                } else {
+                                                    dia = (today.getDate())
+                                                }
+
+                                                var hora = dia + "" + mes + "" + today.getFullYear() + "_" + today.getHours() + "" + today.getMinutes() + "" + today.getSeconds()
+
+                                                set(referencia,
+                                                    {
+                                                        id: data.id,
+                                                        concluido: true,
+                                                        data: hora,
+                                                        tipo: 13,
+                                                        aprovado: true,
+                                                        reprovado: false
+                                                    }
+                                                )
+
+                                            }
+                                        })
+
+                                    }
+                                })
+
+
+                            }
+                        )
+                    }
+
+                    fetchPost();
+
                 }
 
             }
@@ -261,7 +350,7 @@ const Atividades = () => {
                         </IconButton>
 
                         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                            Clube {clube} ({sessionStorage.getItem("titulo")})
+                            Clube {clube} ({sessionStorage.getItem("tituloE")})
                         </Typography>
 
                         <div>
@@ -300,7 +389,7 @@ const Atividades = () => {
     );
 
 }
-export default Atividades
+export default EspecActivitiX
 
 
 const livrosBiblicos = [
