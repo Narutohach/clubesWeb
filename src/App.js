@@ -14,6 +14,7 @@ import EspecActiviti from "./especialidades/atividades";
 import EspecActivitiX from "./especialidades/EspecActivitiX";
 import Capitulos from "./livros/Capitulos"
 import Seletor from "./livros/Seletor"
+import Cantinho from "./cantinho/Cantinho"
 import Video from "./respostas/Video"
 import TextoBiblico from "./respostas/TextoBiblico"
 import MultiEspec from "./respostas/MultiEspec"
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="/especialidades/atividades" element={<EspecActiviti />} />
             <Route path="/especialidades/atividadesespec" element={<EspecActivitiX />} />
             <Route path="/livros" element={<Livros />} />
+            <Route path="/cantinho" element={<Cantinho />} />
             <Route path="/livros/capitulos" element={<Capitulos />} />
             <Route path="/livros/capitulos/seletor" element={<Seletor />} />
             <Route path="/respostas/video" element={<Video />} />

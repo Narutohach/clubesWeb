@@ -19,7 +19,7 @@ const DataAnexo = () => {
 
     useEffect(() => {
         if (!sessionStorage.getItem('id')) {
-            navigate('/', { replace: true });
+            window.location = '/';
         }
     }, [])
 

@@ -18,6 +18,12 @@ import PropTypes from "prop-types";
 
 const Categoria = () => {
 
+    useEffect(() => {
+        if (!sessionStorage.getItem('id')) {
+            window.location = '/';
+        }
+    }, [])
+
 
     const nome = sessionStorage.getItem("nome")
     const clube = sessionStorage.getItem("clube")

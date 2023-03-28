@@ -26,6 +26,7 @@ background: red;
     box-shadow: 10px 6px 5px grey;
     font-size: x-large;
     text-align: center;
+    flex: 1;
 }
 
 .x:hover {

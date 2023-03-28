@@ -24,6 +24,12 @@ import Grid from "@mui/material/Grid";
 
 const Classes = () => {
 
+    useEffect(() => {
+        if (!sessionStorage.getItem('id')) {
+            window.location = '/';
+        }
+    }, [])
+
 
     const nome = sessionStorage.getItem("nome")
     const clube = sessionStorage.getItem("clube")
@@ -153,12 +159,6 @@ const Classes = () => {
     }
 
 
-    const handleClickCapitulos = (id, nome) => {
-        sessionStorage.setItem("livroId", id);
-        sessionStorage.setItem("origem", "leitura");
-        sessionStorage.setItem("nomeLivro", nome);
-        navigate('/livros/capitulos');
-    }
 
 
     return (
@@ -186,14 +186,17 @@ const Classes = () => {
             <div>
 
                 <Box id={"corpo"} sx={{flexGrow: 1, margin: 2}}>
-                    <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
+                    <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit" style={{display: "flex",
+                        flexWrap: "wrap"}}>
                         {classes.map((livrox, i) => (
-                            <Grid justifyContent="flex-end" item xs={2} key={i}>
+                            <Grid justifyContent="flex-end" item xs={2} key={i} style={{display: "flex",
+                                flexWrap: "wrap"}}>
                                 <Item className={"x"} onClick={() => {
                                     handleClickAtividades(livrox)
                                 }}>
-                                    <img src={getImagem(livrox)} alt="Ideais" width="250" height="300"></img>
-                                    <div className="desc">{getNome(livrox)}</div>
+                                    <img src={getImagem(livrox)} alt="Ideais" width="250" height="300"
+                                         style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%", height: "auto"}}></img>
+                                    <div className="desc" style={{paddingTop: 10}}>{getNome(livrox)}</div>
                                 </Item>
                             </Grid>
                         ))}

@@ -18,6 +18,12 @@ import PropTypes from "prop-types";
 
 const Agenda = () => {
 
+    useEffect(() => {
+        if (!sessionStorage.getItem('id')) {
+            window.location = '/';
+        }
+    }, [])
+
 
     const nome = sessionStorage.getItem("nome")
     const clube = sessionStorage.getItem("clube")
@@ -44,31 +50,41 @@ const Agenda = () => {
     const [resp, setResp] = useState([]);
 
 
-
     useEffect(() => {
 
         const livros = ref(realtime, "AGENDA/" + sessionStorage.getItem('clubeId'));
-
-
 
 
         onValue(livros, (snapshot) => {
             var ll = []
             snapshot.forEach(snap => {
                 const data = snap.val();
-                ll.push(data)
+
+                const today = new Date();
+                var mes = today.getMonth();
+                var dia = today.getDate();
+                var ano = today.getFullYear();
+
+                const date = new Date((data.datade.year + 1900) + "-" + (data.datade.month + 1) + "-" + data.datade.date)
+                const dateToday = new Date(ano + "-" + (mes + 1) + "-" + dia)
+
+                if (date >= dateToday) {
+                    ll.push(data)
+                }
             })
 
+
+            ll.sort(function (a, b) {
+                let x = new Date((a.datade.year + 1900) + "-" + (a.datade.month + 1) + "-" + a.datade.date),
+                    y = new Date((b.datade.year + 1900) + "-" + (b.datade.month + 1) + "-" + b.datade.date);
+                return x == y ? 0 : x > y ? 1 : -1;
+
+            });
             setLivrosList1(ll);
 
         });
 
     }, [])
-
-
-
-
-
 
 
     return (
@@ -103,13 +119,26 @@ const Agenda = () => {
                     <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
                         {livrosList1.map((livrox, i) => (
                             <Grid justifyContent="flex-end" item xs={12} key={i}>
-                                <Item id={livrox.id} className={"xx"}>
+                                {i==0 &&
+                                    <Item id={livrox.id} className={"xx"} style={{backgroundColor: "#227C70"}}>
                                     <div className="title">{livrox.titulo}</div>
-                                    <div className="title">Data Inicial: {livrox.datade.date}/{livrox.datade.month + 1}/{livrox.datade.year + 1900}</div>
-                                    <div className="title">Data Final: {livrox.datapara.date}/{livrox.datapara.month + 1}/{livrox.datapara.year + 1900}</div>
-                                </Item>
+                                    <div className="title">Data
+                                        Inicial: {livrox.datade.date}/{livrox.datade.month + 1}/{livrox.datade.year + 1900}</div>
+                                    <div className="title">Data
+                                        Final: {livrox.datapara.date}/{livrox.datapara.month + 1}/{livrox.datapara.year + 1900}</div>
+                                </Item>}
+                                {i>0 &&
+                                    <Item id={livrox.id} className={"xx"}>
+                                        <div className="title">{livrox.titulo}</div>
+                                        <div style={{color: "gray"}}>{livrox.descricao}</div>
+                                        <div style={{color: "gray"}}>Data
+                                            Inicial: {livrox.datade.date}/{livrox.datade.month + 1}/{livrox.datade.year + 1900}</div>
+                                        <div style={{color: "gray"}}>Data
+                                            Final: {livrox.datapara.date}/{livrox.datapara.month + 1}/{livrox.datapara.year + 1900}</div>
+                                    </Item>}
                             </Grid>
                         ))}
+
 
                     </Grid>
                 </Box>

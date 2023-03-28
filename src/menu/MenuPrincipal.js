@@ -12,6 +12,7 @@ import logoLenco from '../imagens/lenco_removebg.png';
 import logoCavaleiro from '../imagens/escudocvfdesbrava.png';
 import logoConfig from '../imagens/ic_configuracoes_1.svg';
 import logoAgenda from '../imagens/ic_agenda_1.svg';
+import logoCantinho from '../imagens/cantinho.png';
 import {useNavigate} from "react-router-dom";
 import {AppBar, Toolbar} from "@mui/material";
 import Typography from '@mui/material/Typography';
@@ -31,6 +32,7 @@ const MenuPrincipal = () => {
 
     const nome = sessionStorage.getItem("nome")
     const clube = sessionStorage.getItem("clube")
+    const funcao = sessionStorage.getItem("funcao");
 
 
     const Item = styled(Paper)(({theme}) => ({
@@ -52,6 +54,7 @@ const MenuPrincipal = () => {
     const handleClickLenco = () => navigate('/lenco');
 
     const handleClickAgenda = () => navigate('/agenda');
+    const handleClickCantinho = () => navigate('/Cantinho');
 
     const handleClickCavaleiro = () => {
         sessionStorage.setItem('classe', 15);
@@ -178,6 +181,17 @@ const MenuPrincipal = () => {
                                 <div className="desc">Agenda do Clube</div>
                             </Item>
                         </Grid>
+
+                        {(funcao == 1 || funcao == 2 || funcao == 3 || funcao == 4 || funcao == 5) &&
+                        <Grid item xs={2} key={4}>
+                            <Item className={"x"} onClick={() => {
+                                handleClickCantinho()
+                            }}>
+                                <img src={logoCantinho} alt="Agenda" width="300" height="200"
+                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
+                                <div className="desc">Cantinho da Unidade</div>
+                            </Item>
+                        </Grid>}
 
 
                     </Grid>

@@ -19,7 +19,7 @@ const Especialidades = () => {
 
     useEffect(() => {
         if (!sessionStorage.getItem('id')) {
-            navigate('/', { replace: true });
+            window.location = '/';
         }
     }, [])
 
@@ -102,13 +102,16 @@ const Especialidades = () => {
             </Box>
             <div>
                 <Box id={"corpo"} sx={{flexGrow: 1, margin: 2}}>
-                    <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
+                    <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit" style={{display: "flex",
+                        flexWrap: "wrap"}}>
                         {livrosList.map((livrox, i) => (
-                            <Grid justifyContent="flex-end" item xs={2} key={i}>
+                            <Grid justifyContent="flex-end" item xs={2} key={i} style={{display: "flex",
+                                flexWrap: "wrap"}}>
                                 <Item className={"x"} onClick={() => {
                                     handleClickAtividades(livrox.id, livrox.nome)
                                 }}>
-                                    <img src={livrox.enderecoImagem} alt="Ideais" width="250" height="300"></img>
+                                    <img src={livrox.enderecoImagem} alt="Ideais" width="250" height="300"
+                                         style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%", height: "auto"}}></img>
                                     <div className="desc">{livrox.nome}</div>
                                 </Item>
                             </Grid>

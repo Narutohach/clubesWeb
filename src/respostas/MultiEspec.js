@@ -19,7 +19,7 @@ const MultiEspec = () => {
 
     useEffect(() => {
         if (!sessionStorage.getItem('id')) {
-            navigate('/', {replace: true});
+            window.location = '/';
         }
     }, [])
 
