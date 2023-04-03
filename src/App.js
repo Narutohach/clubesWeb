@@ -27,6 +27,10 @@ import DataAnexo from "./respostas/DataAnexo"
 import Pontuacao from "./respostas/Pontuacao"
 import Escolha from "./respostas/Escolha"
 import Lenco from "./prova_lenco/ProvaLenco"
+import Config from "./config/Configuracoes"
+import AltSenha from "./config/Senha"
+import Unidades from "./config/Unidades"
+import UnidadesMember from "./config/UnidadesMember"
 
 const App = () => (
     <Router>
@@ -57,6 +61,10 @@ const App = () => (
             <Route path="/respostas/escolha" element={<Escolha />} />
             <Route path="/respostas/multiespec" element={<MultiEspec />} />
             <Route path="/lenco" element={<Lenco />} />
+            <Route path="/config" element={<Config />} />
+            <Route path="/config/Pass" element={<AltSenha />} />
+            <Route path="/config/unidade" element={<Unidades />} />
+            <Route path="/config/unidade/membros" element={<UnidadesMember />} />
         </Routes>
     </Router>
 );

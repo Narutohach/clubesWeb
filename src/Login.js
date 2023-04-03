@@ -84,8 +84,6 @@ const Login = () => {
         var nn = name;
         var pp = password;
 
-        console.log("aqui", selecionado, clubeNome, nn)
-
         const logins = query(collection(firestore, "LOGINS"), where("clubeId", "==", selecionado), where("login", "==", nn), where("ativo", "==", true)).withConverter(loginConverter);
 
         const querySnapshotLogins = await getDocs(logins);
@@ -96,10 +94,6 @@ const Login = () => {
 
         querySnapshotLogins.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
-
-            console.log("aqui", doc.data().getNome())
-
-
 
 
 
@@ -142,6 +136,7 @@ const Login = () => {
                 sessionStorage.setItem('funcao', funcao)
                 sessionStorage.setItem('unidade', unidade)
                 sessionStorage.setItem('clube', clubeNome)
+                sessionStorage.setItem('pass', pp)
 
                 // window.location.href = "menu.html";
                 handleClick()

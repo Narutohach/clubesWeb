@@ -56,6 +56,8 @@ const MenuPrincipal = () => {
     const handleClickAgenda = () => navigate('/agenda');
     const handleClickCantinho = () => navigate('/Cantinho');
 
+    const handleClickConfig = () => navigate('/config');
+
     const handleClickCavaleiro = () => {
         sessionStorage.setItem('classe', 15);
         navigate('/classes/Categoria');
@@ -99,6 +101,16 @@ const MenuPrincipal = () => {
                 <Box sx={{flexGrow: 1, margin: 2}}>
 
                     <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
+
+                        <Grid item xs={2} key={4}>
+                            <Item className={"x"} onClick={() => {
+                                handleClickConfig()
+                            }}>
+                                <img src={logoConfig} alt="Cavaleiro Fiel" width="300" height="200"
+                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
+                                <div className="desc">Configurações</div>
+                            </Item>
+                        </Grid>
 
                         <Grid item xs={2}>
                             <Item className={"x"} onClick={() => {
@@ -161,16 +173,6 @@ const MenuPrincipal = () => {
                                 <div className="desc">Cavaleiro Fiel</div>
                             </Item>
                         </Grid>
-
-                        {/*<Grid item xs={2} key={4}>*/}
-                        {/*    <Item className={"x"} onClick={() => {*/}
-                        {/*        handleClickCavaleiro()*/}
-                        {/*    }}>*/}
-                        {/*        <img src={logoConfig} alt="Cavaleiro Fiel" width="300" height="200"*/}
-                        {/*             style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>*/}
-                        {/*        <div className="desc">Configurações</div>*/}
-                        {/*    </Item>*/}
-                        {/*</Grid>*/}
 
                         <Grid item xs={2} key={4}>
                             <Item className={"x"} onClick={() => {

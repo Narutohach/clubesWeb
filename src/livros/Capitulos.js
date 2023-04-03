@@ -64,13 +64,20 @@ const Capitulos = () => {
 
     }, []);
 
-    const handleClickCapitulos = (id, questao, link) => {
+    const handleClickCapitulos = (id, questao, link, c) => {
         sessionStorage.setItem('capituloId', id);
         sessionStorage.setItem('questao', questao);
         sessionStorage.setItem('link', link);
         sessionStorage.setItem('caminho', "RESPOSTAS/" + sessionStorage.getItem('clubeId') + "/"
             + sessionStorage.getItem('id') + "/LIVROS2/" + sessionStorage.getItem('livroIdz') + "/" + id);
-        navigate('/livros/capitulos/seletor');
+        if (c.tipo === 15 && c.link.length > 4 && c.leitura === "PDF") {
+            navigate('/livros/capitulos/seletor');
+        } else if (c.tipo === 15 && c.link.length > 4 && c.leitura !== "PDF") {
+            navigate('/respostas/video');
+        } else {
+            navigate('/respostas/pdf');
+        }
+        console.log(questao)
     }
 
     useEffect(() => {
@@ -250,7 +257,7 @@ const Capitulos = () => {
                         {livrosList.map((livrox, i) => (
                             <Grid justifyContent="flex-end" item xs={12} key={i}>
                                 <Item id={livrox.id} className={"xx"} onClick={() => {
-                                    handleClickCapitulos(livrox.id, livrox.questão, livrox.link)
+                                    handleClickCapitulos(livrox.id, livrox.questão, livrox.link, livrox)
                                 }}>
                                     <div className="title">{livrox.questão}</div>
                                     <div className="desc">{livrox.descricao}</div>
