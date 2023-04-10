@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from '@mui/icons-material/ArrowBack';
 import Group from '@mui/icons-material/Group';
+import User from '@mui/icons-material/AccountCircle';
 
 const Configuracoes = () => {
 
@@ -46,6 +47,8 @@ const Configuracoes = () => {
     const handleClickSenha = () => navigate('/config/Pass');
 
     const handleClickUnidades = () => navigate('/config/unidade');
+
+    const handleClickUsers = () => navigate('/config/users');
 
     return (
         <div>
@@ -106,6 +109,23 @@ const Configuracoes = () => {
                                         color: "black"
                                     }}><Group/></svg>
                                     <div className="desc">Unidades</div>
+                                </Item>
+                            </Grid>}
+
+                        {(funcao == 1 || funcao == 2 || funcao == 3 || funcao == 5) &&
+                            <Grid item xs={2} key={4}>
+                                <Item className={"x"} onClick={() => {
+                                    handleClickUsers()
+                                }}>
+                                    <svg alt="Alterar Senha" width="300" height="200" color="black" sx={{
+                                        fontSize: 40,
+                                        display: "block",
+                                        marginLeft: "auto",
+                                        marginRight: "auto",
+                                        width: "60%",
+                                        color: "black"
+                                    }}><User/></svg>
+                                    <div className="desc">Usuários</div>
                                 </Item>
                             </Grid>}
 

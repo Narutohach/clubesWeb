@@ -80,7 +80,7 @@ const AltSenha = () => {
 
         var x = password2
 
-        var remain = 4 % 16;
+        var remain = password2.length % 16;
 
         if (remain != 0) {
             remain = 16 - remain

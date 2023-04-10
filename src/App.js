@@ -31,6 +31,7 @@ import Config from "./config/Configuracoes"
 import AltSenha from "./config/Senha"
 import Unidades from "./config/Unidades"
 import UnidadesMember from "./config/UnidadesMember"
+import Users from "./config/Users"
 
 const App = () => (
     <Router>
@@ -65,6 +66,7 @@ const App = () => (
             <Route path="/config/Pass" element={<AltSenha />} />
             <Route path="/config/unidade" element={<Unidades />} />
             <Route path="/config/unidade/membros" element={<UnidadesMember />} />
+            <Route path="/config/users" element={<Users />} />
         </Routes>
     </Router>
 );
