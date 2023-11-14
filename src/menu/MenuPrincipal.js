@@ -6,6 +6,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import espec from '../imagens/ic_especialidades.svg';
 import classes from '../imagens/ic_classes.svg';
+import AnoB from '../imagens/book_24.svg';
 import logoIdeais from '../imagens/ic_ideais.svg';
 import logoLivros from '../imagens/ic_livros.svg';
 import logoLenco from '../imagens/lenco_removebg.png';
@@ -54,6 +55,7 @@ const MenuPrincipal = () => {
     const handleClickLenco = () => navigate('/lenco');
 
     const handleClickAgenda = () => navigate('/agenda');
+    const handleClickAnoB = () => navigate('/anob');
     const handleClickCantinho = () => navigate('/Cantinho');
 
     const handleClickConfig = () => navigate('/config');
@@ -181,6 +183,16 @@ const MenuPrincipal = () => {
                                 <img src={logoAgenda} alt="Agenda" width="300" height="200"
                                      style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
                                 <div className="desc">Agenda do Clube</div>
+                            </Item>
+                        </Grid>
+
+                        <Grid item xs={2} key={4}>
+                            <Item className={"x"} onClick={() => {
+                                handleClickAnoB()
+                            }}>
+                                <img src={AnoB} alt="Agenda" width="300" height="200"
+                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
+                                <div className="desc">Ano Bíblico</div>
                             </Item>
                         </Grid>
 

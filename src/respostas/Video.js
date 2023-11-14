@@ -11,9 +11,26 @@ import {useNavigate} from "react-router-dom";
 import YouTube from "react-youtube";
 import {realtime} from "../firebase_setup/firebase";
 import {ref, set} from "@firebase/database";
-import {useEffect} from "react";
+import {useEffect, useState } from "react";
 
 const Video = () => {
+
+
+
+    const [screenHeight, setScreenHeight] = useState(window.innerHeight);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenHeight(window.innerHeight);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
 
     useEffect(() => {
         if (!sessionStorage.getItem('id')) {
@@ -82,16 +99,25 @@ const Video = () => {
 
     const opts = {
         playerVars: {
-            controls: 0,
-            disablekb: 1,
-            fs: 1,
-            modestbranding: 1,
-            showinfo: 0
-        }
-    };
+          controls: 0,
+          disablekb: 1,
+          fs: 1,
+          modestbranding: 1,
+          showinfo: 0,
+        },
+        width: "100%", // Definir a largura como 100%
+        height: screenHeight + "px", // Definir a altura como 100%
+      };
 
     return (
-        <div>
+        
+        <div style={{
+            position: "fixed",
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+          }}>
             <Box sx={{flexGrow: 1}}>
                 <AppBar position="static" enableColorOnDark>
                     <Toolbar>
@@ -112,7 +138,11 @@ const Video = () => {
                     </Toolbar>
                 </AppBar>
             </Box>
-            <div>
+            
+            <div style={{
+        position: "relative",
+        height: "100%",
+      }}>
                 <YouTube videoId={link}
                          onEnd={
                              () => {
