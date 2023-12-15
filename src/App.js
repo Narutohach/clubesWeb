@@ -33,6 +33,9 @@ import Unidades from "./config/Unidades"
 import UnidadesMember from "./config/UnidadesMember"
 import Users from "./config/Users"
 import AnoB from "./anobiblico/AnoBiblico"
+import AnoBLivros from "./anobiblico/livros"
+import TelaAnoBiblicoCapitulos from "./anobiblico/Capitulos"
+import TelaAnoBiblicoLeitura from "./anobiblico/Leitura"
 
 const App = () => (
     <Router>
@@ -69,6 +72,9 @@ const App = () => (
             <Route path="/config/unidade/membros" element={<UnidadesMember />} />
             <Route path="/config/users" element={<Users />} />
             <Route path="/anob" element={<AnoB />} />
+            <Route path="/anoblivros" element={<AnoBLivros />} />
+            <Route path="/anobCaps" element={<TelaAnoBiblicoCapitulos />} />
+            <Route path="/anobLeitura" element={<TelaAnoBiblicoLeitura />} />
         </Routes>
     </Router>
 );

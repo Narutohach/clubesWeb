@@ -184,6 +184,13 @@ const Login = () => {
                 >
                     <TextField fullWidth sx={{m: 1}}
                                value={name}
+                               InputLabelProps={{
+                                   sx: {
+                                       '&.Mui-focused': {
+                                           color: '#227C70', // Cor desejada quando focado
+                                       },
+                                   },
+                               }}
                                label="Username"
                                onChange={(e) => {
                                    setName(e.target.value);
@@ -192,7 +199,7 @@ const Login = () => {
 
 
                     <FormControl fullWidth sx={{m: 1}} variant="outlined">
-                        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                        <InputLabel htmlFor="outlined-adornment-password" >Password</InputLabel>
                         <OutlinedInput
                             id="outlined-adornment-password"
                             type={showPassword ? 'text' : 'password'}

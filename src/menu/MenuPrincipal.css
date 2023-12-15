@@ -68,6 +68,11 @@ div.title {
     font-weight: bold;
 }
 
+div.corpo {
+    font-size: medium;
+    text-align: left;
+}
+
 a:link {
     color: black;
     background-color: transparent;

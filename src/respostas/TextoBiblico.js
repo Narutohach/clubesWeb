@@ -1,21 +1,17 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import '../menu/MenuPrincipal.css';
-import { experimentalStyled as styled } from '@mui/material/styles';
+import {experimentalStyled as styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import { AppBar, Card, CardMedia, Fab, Toolbar } from "@mui/material";
-import TextField from '@mui/material/TextField';
+import {AppBar, Fab, Toolbar} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/ArrowBack";
-import { useNavigate } from "react-router-dom";
-import { onValue, ref, set } from "@firebase/database";
-import { realtime } from "../firebase_setup/firebase";
+import {useNavigate} from "react-router-dom";
+import {onValue, ref, set} from "@firebase/database";
+import {realtime} from "../firebase_setup/firebase";
 import AddIcon from "@mui/icons-material/Check";
-import Button from "@mui/material/Button";
-import { Stack } from "@mui/system";
-import Grid from "@mui/material/Grid";
 
 const TextoBiblico = () => {
 
