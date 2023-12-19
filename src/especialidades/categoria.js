@@ -69,9 +69,10 @@ const CategoriaEspecialidade = () => {
 
 
     return (
-        <div>
-            <Box sx={{flexGrow: 1}}>
-                <AppBar position="static" enableColorOnDark>
+        <div style={{position: 'fixed', width: '100%'}}>
+
+            <Box sx={{flexGrow: 1}} style={{width: '100%'}}>
+                <AppBar position="static" enableColorOnDark style={{width: '100%'}}>
                     <Toolbar>
                         <IconButton size="large"
                                     edge="start"
@@ -95,19 +96,21 @@ const CategoriaEspecialidade = () => {
                 </AppBar>
             </Box>
             <div>
-                <Box id={"corpo"} sx={{flexGrow: 1, margin: 2}}>
-                    <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
-                        {livrosList.map((livrox, i) => (
-                            <Grid justifyContent="flex-end" item xs={12} key={i}>
-                                <Item id={livrox.id} className={"xx"} onClick={() => {
-                                    handleClick(livrox.id)
-                                }}>
-                                    <div className="title">{livrox.categoria}</div>
-                                </Item>
-                            </Grid>
-                        ))}
+                <Box sx={{maxHeight: '88vh', overflow: 'auto'}}>
+                    <Box sx={{flexGrow: 1, margin: 2}}>
+                        <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
+                            {livrosList.map((livrox, i) => (
+                                <Grid justifyContent="flex-end" item xs={12} key={i}>
+                                    <Item id={livrox.id} className={"xx"} onClick={() => {
+                                        handleClick(livrox.id)
+                                    }}>
+                                        <div className="title">{livrox.categoria}</div>
+                                    </Item>
+                                </Grid>
+                            ))}
 
-                    </Grid>
+                        </Grid>
+                    </Box>
                 </Box>
             </div>
         </div>

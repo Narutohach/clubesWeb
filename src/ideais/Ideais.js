@@ -28,11 +28,10 @@ const Ideais = () => {
     }, [])
 
 
-    const nome = sessionStorage.getItem("nome")
     const clube = sessionStorage.getItem("clube")
 
 
-    const Item = styled(Paper)(({ theme }) => ({
+    const Item = styled(Paper)(({theme}) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
         ...theme.typography.body2,
         padding: theme.spacing(2),
@@ -45,17 +44,18 @@ const Ideais = () => {
     }
 
     return (
-        <div>
-            <Box sx={{flexGrow: 1}}>
-                <AppBar position="static" enableColorOnDark>
+        <div style={{position: 'fixed', width: '100%'}}>
+
+            <Box sx={{flexGrow: 1}} style={{width: '100%'}}>
+                <AppBar position="static" enableColorOnDark style={{width: '100%'}}>
                     <Toolbar>
                         <IconButton size="large"
                                     edge="start"
                                     color="inherit"
                                     aria-label="menu"
-                                    sx={{ mr: 2, color: "white"}}
+                                    sx={{mr: 2, color: "white"}}
                                     onClick={goBack}>
-                            <DeleteIcon />
+                            <DeleteIcon/>
                         </IconButton>
 
                         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
@@ -63,73 +63,73 @@ const Ideais = () => {
                         </Typography>
 
 
-
-
                     </Toolbar>
                 </AppBar>
             </Box>
             <div>
-                <Box sx={{flexGrow: 1, margin: 2}}>
-                    <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
-                        <Grid item xs={12} key={1}>
-                            <a href={imgVoto}>
-                                <Item className={"xx"}>
-                                    <div className="desc">Voto</div>
-                                </Item>
-                            </a>
-                        </Grid>
+                <Box sx={{maxHeight: '88vh', overflow: 'auto'}}>
+                    <Box sx={{flexGrow: 1, margin: 2}}>
+                        <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
+                            <Grid item xs={12} key={1}>
+                                <a href={imgVoto}>
+                                    <Item className={"xx"}>
+                                        <div className="desc">Voto</div>
+                                    </Item>
+                                </a>
+                            </Grid>
 
-                        <Grid item xs={12} key={1}>
-                            <a href={imgLei}>
-                            <Item className={"xx"}>
-                                <div class="desc">Lei</div>
-                            </Item>
-                            </a>
-                        </Grid>
+                            <Grid item xs={12} key={2}>
+                                <a href={imgLei}>
+                                    <Item className={"xx"}>
+                                        <div className="desc">Lei</div>
+                                    </Item>
+                                </a>
+                            </Grid>
 
-                        <Grid item xs={12}  key={1}>
-                            <a href={imgAlvo}>
-                                <Item className={"xx"}>
-                                    <div className="desc">Alvo</div>
-                                </Item>
-                            </a>
+                            <Grid item xs={12} key={3}>
+                                <a href={imgAlvo}>
+                                    <Item className={"xx"}>
+                                        <div className="desc">Alvo</div>
+                                    </Item>
+                                </a>
+                            </Grid>
+                            <Grid item xs={12} key={4}>
+                                <a href={imgLema}>
+                                    <Item className={"xx"}>
+                                        <div className="desc">Lema</div>
+                                    </Item>
+                                </a>
+                            </Grid>
+                            <Grid item xs={12} key={5}>
+                                <a href={imgObjetivo}>
+                                    <Item className={"xx"}>
+                                        <div className="desc">Objetivo</div>
+                                    </Item>
+                                </a>
+                            </Grid>
+                            <Grid item xs={12} key={6}>
+                                <a href={imgProposito}>
+                                    <Item className={"xx"}>
+                                        <div className="desc">Propósito</div>
+                                    </Item>
+                                </a>
+                            </Grid>
+                            <Grid item xs={12} key={7}>
+                                <a href={imgBiblia}>
+                                    <Item className={"xx"}>
+                                        <div className="desc">Voto de Fidelidade a Bíblia</div>
+                                    </Item>
+                                </a>
+                            </Grid>
+                            <Grid item xs={12} key={8}>
+                                <a href={hino}>
+                                    <Item className={"xx"}>
+                                        <div className="desc">Hino dos Desbravadores</div>
+                                    </Item>
+                                </a>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}  key={1}>
-                            <a href={imgLema}>
-                                <Item className={"xx"}>
-                                    <div className="desc">Lema</div>
-                                </Item>
-                            </a>
-                        </Grid>
-                        <Grid item xs={12}  key={1}>
-                            <a href={imgObjetivo}>
-                                <Item className={"xx"}>
-                                    <div className="desc">Objetivo</div>
-                                </Item>
-                            </a>
-                        </Grid>
-                        <Grid item xs={12}  key={1}>
-                            <a href={imgProposito}>
-                                <Item className={"xx"}>
-                                    <div className="desc">Propósito</div>
-                                </Item>
-                            </a>
-                        </Grid>
-                        <Grid item xs={12}  key={1}>
-                            <a href={imgBiblia}>
-                                <Item className={"xx"}>
-                                    <div className="desc">Voto de Fidelidade a Bíblia</div>
-                                </Item>
-                            </a>
-                        </Grid>
-                        <Grid item xs={12}  key={1}>
-                            <a href={hino}>
-                                <Item className={"xx"}>
-                                    <div className="desc">Hino dos Desbravadores</div>
-                                </Item>
-                            </a>
-                        </Grid>
-                    </Grid>
+                    </Box>
                 </Box>
             </div>
         </div>

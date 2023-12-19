@@ -184,7 +184,7 @@ const Atividades = () => {
             sessionStorage.setItem("livroIdz", livrox.leitura);
             sessionStorage.setItem("origemz", "leitura");
             sessionStorage.setItem("nomeLivroz", livrox.descricao);
-            navigate('/livros/capitulos', { state: { id: 7, color: 'green' } });
+            navigate('/livros/capitulos', {state: {id: 7, color: 'green'}});
         }
 
         if (livrox.tipo === 14) {
@@ -247,9 +247,10 @@ const Atividades = () => {
 
 
     return (
-        <div>
-            <Box sx={{flexGrow: 1}}>
-                <AppBar position="static" enableColorOnDark>
+        <div style={{position: 'fixed', width: '100%'}}>
+
+            <Box sx={{flexGrow: 1}} style={{width: '100%'}}>
+                <AppBar position="static" enableColorOnDark style={{width: '100%'}}>
                     <Toolbar>
                         <IconButton size="large"
                                     edge="start"
@@ -275,25 +276,27 @@ const Atividades = () => {
                 </AppBar>
             </Box>
             <div>
-                <Box id={"corpo"} sx={{flexGrow: 1, margin: 2}}>
-                    <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
-                        {livrosList.map((livrox, i) => (
-                            <Grid justifyContent="flex-end" item xs={12} key={i}>
-                                <Item id={livrox.id} className={"xx"} onClick={() => {
-                                    handleClickCapitulos(livrox)
-                                }}>
-                                    <div className="title">{livrox.questão}</div>
-                                    <div className="desc">{livrox.descricao}</div>
-                                    {livrox.tipo === 9 &&
-                                        <div>
-                                            {livrosBiblicos[livrox.livro]} {livrox.chapter + 1}:{livrox.de + 1}-{livrox.para + 1}
-                                        </div>
-                                    }
-                                </Item>
-                            </Grid>
-                        ))}
+                <Box sx={{maxHeight: '88vh', overflow: 'auto'}}>
+                    <Box sx={{flexGrow: 1, margin: 2}}>
+                        <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
+                            {livrosList.map((livrox, i) => (
+                                <Grid justifyContent="flex-end" item xs={12} key={i}>
+                                    <Item id={livrox.id} className={"xx"} onClick={() => {
+                                        handleClickCapitulos(livrox)
+                                    }}>
+                                        <div className="title">{livrox.questão}</div>
+                                        <div className="desc">{livrox.descricao}</div>
+                                        {livrox.tipo === 9 &&
+                                            <div>
+                                                {livrosBiblicos[livrox.livro]} {livrox.chapter + 1}:{livrox.de + 1}-{livrox.para + 1}
+                                            </div>
+                                        }
+                                    </Item>
+                                </Grid>
+                            ))}
 
-                    </Grid>
+                        </Grid>
+                    </Box>
                 </Box>
             </div>
         </div>

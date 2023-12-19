@@ -45,13 +45,9 @@ const Categoria = () => {
 
     const [livrosList, setLivrosList] = useState([]);
     const [livrosList1, setLivrosList1] = useState([]);
-    const [livrosList2, setLivrosList2] = useState([]);
-    const [ll, setLl] = useState([]);
-    const [llx, setLlx] = useState(0);
 
     const [quests, setQuests] = useState([]);
     const [resp, setResp] = useState([]);
-
 
 
     useEffect(() => {
@@ -119,7 +115,7 @@ const Categoria = () => {
 
     useEffect(() => {
         var ll = []
-        livrosList.forEach((i) =>{
+        livrosList.forEach((i) => {
 
             var j = i;
 
@@ -127,15 +123,13 @@ const Categoria = () => {
                 var questconta = quests.filter(e => (e.categoria === i.unidade));
                 var respostt = quests.filter(e => resp.some(item => item.id === e.id && item.aprovado == true && e.categoria === i.unidade));
 
-                j.qtde = ((respostt.length * 100)/questconta.length)
+                j.qtde = ((respostt.length * 100) / questconta.length)
                 ll.push(j)
             }
 
         })
         setLivrosList1(ll)
     }, [livrosList])
-
-
 
 
     // useEffect(() => {
@@ -230,10 +224,9 @@ const Categoria = () => {
     }, [classe, qst])
 
 
-
     function CircularProgressWithLabel(props) {
         return (
-            <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+            <Box sx={{position: 'relative', display: 'inline-flex'}}>
                 <CircularProgress sx={{color: '#227C70'}} variant="determinate" {...props} />
                 <Box
                     sx={{
@@ -266,9 +259,10 @@ const Categoria = () => {
 
 
     return (
-        <div>
-            <Box sx={{flexGrow: 1}}>
-                <AppBar position="static" enableColorOnDark>
+        <div style={{position: 'fixed', width: '100%'}}>
+
+            <Box sx={{flexGrow: 1}} style={{width: '100%'}}>
+                <AppBar position="static" enableColorOnDark style={{width: '100%'}}>
                     <Toolbar>
                         <IconButton size="large"
                                     edge="start"
@@ -298,27 +292,38 @@ const Categoria = () => {
                 </AppBar>
             </Box>
             <div>
-                <Box id={"corpo"} sx={{flexGrow: 1, margin: 2}}>
-                    <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
-                        {livrosList1.map((livrox, i) => (
-                            <Grid justifyContent="flex-end" item xs={12} key={i}>
-                                <Item id={livrox.id} className={"xx"} onClick={() => {
-                                    handleClick(livrox.id, livrox.unidade)
-                                }}>
-                                    <div className="box"
-                                         style={{display: "flex", flexWrap: "wrap", justifyContent: "space-between"}}>
-                                        <div className="title">{livrox.unidade}</div>
-                                        <div className="title" id={"perc" + livrox.id}
-                                             style={{justifyContent: "center", alignItems: "center",  position: "relative", display: "inline-block"}}>
-                                            <CircularProgressWithLabel value={livrox.qtde} />
+                <Box sx={{maxHeight: '88vh', overflow: 'auto'}}>
+                    <Box sx={{flexGrow: 1, margin: 2}}>
+                        <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
+                            {livrosList1.map((livrox, i) => (
+                                <Grid justifyContent="flex-end" item xs={12} key={i}>
+                                    <Item id={livrox.id} className={"xx"} onClick={() => {
+                                        handleClick(livrox.id, livrox.unidade)
+                                    }}>
+                                        <div className="box"
+                                             style={{
+                                                 display: "flex",
+                                                 flexWrap: "wrap",
+                                                 justifyContent: "space-between"
+                                             }}>
+                                            <div className="title">{livrox.unidade}</div>
+                                            <div className="title" id={"perc" + livrox.id}
+                                                 style={{
+                                                     justifyContent: "center",
+                                                     alignItems: "center",
+                                                     position: "relative",
+                                                     display: "inline-block"
+                                                 }}>
+                                                <CircularProgressWithLabel value={livrox.qtde}/>
+                                            </div>
+
                                         </div>
+                                    </Item>
+                                </Grid>
+                            ))}
 
-                                    </div>
-                                </Item>
-                            </Grid>
-                        ))}
-
-                    </Grid>
+                        </Grid>
+                    </Box>
                 </Box>
             </div>
         </div>

@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/ArrowBack";
 import {useNavigate} from "react-router-dom";
-import {equalTo, onValue, orderByChild, query, ref, set} from "@firebase/database";
+import {onValue, ref, set} from "@firebase/database";
 import {firestore, realtime} from "../firebase_setup/firebase";
 import {doc, getDoc} from "@firebase/firestore";
 
@@ -23,7 +23,6 @@ const EspecActivitiX = () => {
     }, [])
 
 
-    const nome = sessionStorage.getItem("nome");
     const clube = sessionStorage.getItem("clube");
     const caminhoPergunta = sessionStorage.getItem("questionPatchyE");
     const caminhoResposta = sessionStorage.getItem("questionResponseE");
@@ -43,7 +42,6 @@ const EspecActivitiX = () => {
 
 
     const [livrosList, setLivrosList] = useState([]);
-    const [ok, setOk] = useState(true);
 
 
     useEffect(() => {
@@ -78,18 +76,17 @@ const EspecActivitiX = () => {
     }, [livrosList])
 
     useEffect(() => {
-            let livros = ref(realtime, caminhoPergunta);
-            onValue(livros, (snapshot) => {
-                var ll = []
-                snapshot.forEach(snap => {
-                    const data = snap.val();
-                    ll.push(data)
-                })
+        let livros = ref(realtime, caminhoPergunta);
+        onValue(livros, (snapshot) => {
+            var ll = []
+            snapshot.forEach(snap => {
+                const data = snap.val();
+                ll.push(data)
+            })
 
-                setLivrosList(ll)
+            setLivrosList(ll)
 
-            });
-
+        });
 
 
     }, []);
@@ -156,7 +153,7 @@ const EspecActivitiX = () => {
             sessionStorage.setItem("livroIdz", livrox.leitura);
             sessionStorage.setItem("origemz", "leitura");
             sessionStorage.setItem("nomeLivroz", livrox.descricao);
-            navigate('/livros/capitulos', { state: { id: 7, color: 'green' } });
+            navigate('/livros/capitulos', {state: {id: 7, color: 'green'}});
         }
 
 
@@ -336,9 +333,10 @@ const EspecActivitiX = () => {
 
 
     return (
-        <div>
-            <Box sx={{flexGrow: 1}}>
-                <AppBar position="static" enableColorOnDark>
+        <div style={{position: 'fixed', width: '100%'}}>
+
+            <Box sx={{flexGrow: 1}} style={{width: '100%'}}>
+                <AppBar position="static" enableColorOnDark style={{width: '100%'}}>
                     <Toolbar>
                         <IconButton size="large"
                                     edge="start"
@@ -364,25 +362,27 @@ const EspecActivitiX = () => {
                 </AppBar>
             </Box>
             <div>
-                <Box id={"corpo"} sx={{flexGrow: 1, margin: 2}}>
-                    <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
-                        {livrosList.map((livrox, i) => (
-                            <Grid justifyContent="flex-end" item xs={12} key={i}>
-                                <Item id={livrox.id} className={"xx"} onClick={() => {
-                                    handleClickCapitulos(livrox)
-                                }}>
-                                    <div className="title">{livrox.questão}</div>
-                                    <div className="desc">{livrox.descricao}</div>
-                                    {livrox.tipo === 9 &&
-                                        <div>
-                                            {livrosBiblicos[livrox.livro]} {livrox.chapter + 1}:{livrox.de + 1}-{livrox.para + 1}
-                                        </div>
-                                    }
-                                </Item>
-                            </Grid>
-                        ))}
+                <Box sx={{maxHeight: '88vh', overflow: 'auto'}}>
+                    <Box sx={{flexGrow: 1, margin: 2}}>
+                        <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
+                            {livrosList.map((livrox, i) => (
+                                <Grid justifyContent="flex-end" item xs={12} key={i}>
+                                    <Item id={livrox.id} className={"xx"} onClick={() => {
+                                        handleClickCapitulos(livrox)
+                                    }}>
+                                        <div className="title">{livrox.questão}</div>
+                                        <div className="desc">{livrox.descricao}</div>
+                                        {livrox.tipo === 9 &&
+                                            <div>
+                                                {livrosBiblicos[livrox.livro]} {livrox.chapter + 1}:{livrox.de + 1}-{livrox.para + 1}
+                                            </div>
+                                        }
+                                    </Item>
+                                </Grid>
+                            ))}
 
-                    </Grid>
+                        </Grid>
+                    </Box>
                 </Box>
             </div>
         </div>

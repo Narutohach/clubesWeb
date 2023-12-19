@@ -23,13 +23,13 @@ import {realtime} from "../firebase_setup/firebase";
 import Grid from "@mui/material/Grid";
 import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
-import nvi from "../biblia/nvi";
 
 
 const TelaAnoBiblico = () => {
 
 
     const [anoList, setAnoList] = useState([]);
+    const [anoList1, setAnoList1] = useState([]);
 
     useEffect(() => {
         const database = ref(realtime, 'PLANOLEITURAX/' + sessionStorage.getItem('clubeId') + '/' + sessionStorage.getItem('id'));
@@ -48,6 +48,28 @@ const TelaAnoBiblico = () => {
         })
 
     }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const promises = anoList.map(async (i) => {
+                return new Promise((resolve) => {
+                    const database = ref(realtime, 'RESPOSTAS/' + sessionStorage.getItem('clubeId') + '/' + sessionStorage.getItem('id') +
+                        '/PLANOLEITURAX/' + i.id);
+
+                    onValue(database, (snapshot) => {
+                        const numFilhos = snapshot.size;
+                        i.qtde = numFilhos / 1187 * 100;
+                        resolve(i);
+                    });
+                });
+            });
+
+            const updatedAnoList = await Promise.all(promises);
+            setAnoList1(updatedAnoList);
+        };
+
+        fetchData();
+    }, [anoList]);
 
     const navigate = useNavigate();
     const goBack = () => {
@@ -127,7 +149,6 @@ const TelaAnoBiblico = () => {
     };
 
 
-
     function CircularProgressWithLabel(props) {
         return (
             <Box sx={{position: 'relative', display: 'inline-flex'}}>
@@ -153,7 +174,7 @@ const TelaAnoBiblico = () => {
         );
     }
 
-        function handleClick(id) {
+    function handleClick(id) {
         sessionStorage.setItem("idAno", id)
         navigate('/anoblivros');
     }
@@ -188,12 +209,12 @@ const TelaAnoBiblico = () => {
                     <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
 
 
-                        {anoList.map((livrox, i) => (
+                        {anoList1.map((livrox, i) => (
                             <Grid justifyContent="flex-end" item xs={12} key={i}>
                                 <Card id={livrox.id}
                                     // style={{backgroundColor: livrox.quantidade < livrox.estoqueMinimo ? "#D32F2F" : "white"}}
                                       className={"xx"}
-                                    onClick={() => handleClick(livrox.id)}
+                                      onClick={() => handleClick(livrox.id)}
                                 >
                                     <CardContent style={{position: 'relative'}} sx={{
                                         display: "flex",
@@ -217,7 +238,7 @@ const TelaAnoBiblico = () => {
                                                      position: "relative",
                                                      display: "inline-block"
                                                  }}>
-                                                <CircularProgressWithLabel value={getContagem(livrox.id)}/>
+                                                <CircularProgressWithLabel value={livrox.qtde}/>
                                             </div>
                                         </div>
 
@@ -247,7 +268,6 @@ const TelaAnoBiblico = () => {
             </Fab>
 
 
-
             <Dialog open={openx} onClose={handleClosex}>
                 <DialogContent>
                     <TextField
@@ -269,7 +289,6 @@ const TelaAnoBiblico = () => {
                     />
 
 
-
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClosex}>Cancelar</Button>
@@ -279,9 +298,6 @@ const TelaAnoBiblico = () => {
 
 
         </div>
-
-
-
 
 
     );

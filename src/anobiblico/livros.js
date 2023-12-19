@@ -145,11 +145,11 @@ const TelaAnoBiblicoLivros = () => {
     }
 
 
-
     return (
-        <div style={{position: 'fixed'}}>
-            <Box sx={{flexGrow: 1}}>
-                <AppBar position="static" enableColorOnDark>
+        <div style={{position: 'fixed', width: '100%'}}>
+
+            <Box sx={{flexGrow: 1}} style={{width: '100%'}}>
+                <AppBar position="static" enableColorOnDark style={{width: '100%'}}>
                     <Toolbar>
                         <IconButton size="large"
                                     edge="start"
@@ -163,7 +163,7 @@ const TelaAnoBiblicoLivros = () => {
                         <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                             Clube {clube} (Ano Bíblico)
                         </Typography>
-                        <Typography variant="body1" sx={{ marginRight: 2, color: "white" }}>
+                        <Typography variant="body1" sx={{marginRight: 2, color: "white"}}>
                             {getPorcentoGeral().toFixed(2)}%
                         </Typography>
                     </Toolbar>
@@ -172,9 +172,11 @@ const TelaAnoBiblicoLivros = () => {
 
 
             <div>
-                <Box sx={{maxHeight: '92vh', overflow: 'auto'}}>
-                    <Box id={"corpo"} sx={{flexGrow: 1, margin: 2, marginTop: "4px"}}>
-                        <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
+                <Box sx={{maxHeight: '88vh', overflow: 'auto'}}>
+                    <Box sx={{flexGrow: 1, margin: 2}}>
+
+                        <Grid container spacing={{xs: 2, sm: 2, md: 2}} columns={{xs: 12, sm: 10, md: 8}}
+                              color="inherit">
                             {nvi.map((livrox, i) => (
                                 <Grid justifyContent="flex-end" item xs={12} sm={6} md={4} key={i}>
                                     <Card

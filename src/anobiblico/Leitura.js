@@ -54,7 +54,7 @@ const TelaAnoBiblicoLeitura = () => {
             {
                 id: "L" + (Number(livro) + 1) + "C" + (Number(capitulo) + 1),
                 data: dd,
-                livroId: livro
+                livroId: (Number(livro) + 1).toString()
             })
 
         navigate(-1);

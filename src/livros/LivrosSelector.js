@@ -4,7 +4,7 @@ import {experimentalStyled as styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import {AppBar, Toolbar} from "@mui/material";
+import {AppBar, Toolbar, useMediaQuery} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/ArrowBack";
@@ -41,9 +41,6 @@ const LivrosSelector = () => {
     }
 
 
-
-
-
     const [livrosList, setLivrosList] = useState([]);
 
 
@@ -67,15 +64,18 @@ const LivrosSelector = () => {
         sessionStorage.setItem("livroIdz", id);
         sessionStorage.setItem("origemz", "leitura");
         sessionStorage.setItem("nomeLivroz", nome);
-        navigate('/livros/capitulos');}
+        navigate('/livros/capitulos');
+    }
 
 
+    const matches = useMediaQuery('(max-width:600px)');
 
 
     return (
-        <div>
-            <Box sx={{flexGrow: 1}}>
-                <AppBar position="static" enableColorOnDark>
+        <div style={{position: 'fixed', width: '100%'}}>
+
+            <Box sx={{flexGrow: 1}} style={{width: '100%'}}>
+                <AppBar position="static" enableColorOnDark style={{width: '100%'}}>
                     <Toolbar>
                         <IconButton size="large"
                                     edge="start"
@@ -95,23 +95,34 @@ const LivrosSelector = () => {
                 </AppBar>
             </Box>
             <div>
-                <Box id={"corpo"} sx={{flexGrow: 1, margin: 2}}>
-                    <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit" style={{display: "flex",
-                        flexWrap: "wrap"}}>
-                        {livrosList.map((livrox, i) => (
-                            <Grid justifyContent="flex-end" item xs={2} key={i} style={{display: "flex",
-                                flexWrap: "wrap"}}>
-                                <Item className={"x"} onClick={() => {
-                                    handleClickCapitulos(livrox.id, livrox.nome)
+                <Box sx={{maxHeight: '88vh', overflow: 'auto'}}>
+                    <Box sx={{flexGrow: 1, margin: 2}}>
+                        <Grid container spacing={{xs: 2, sm: 2, md: 2}} columns={{xs: 12, sm: 12, md: 12}}
+                              color="inherit">
+                            {livrosList.map((livrox, i) => (
+                                <Grid justifyContent="flex-end" item xs={6} sm={6} md={2} key={i} style={{
+                                    display: "flex",
+                                    flexWrap: "wrap"
                                 }}>
-                                    <img src={livrox.enderecoImagem} alt="Ideais" width="250" height="300"
-                                         style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%", height: "auto"}}></img>
-                                    <div className="desc">{livrox.nome}</div>
-                                </Item>
-                            </Grid>
-                        ))}
+                                    <Item className={"x"} onClick={() => {
+                                        handleClickCapitulos(livrox.id, livrox.nome)
+                                    }}>
+                                        <img src={livrox.enderecoImagem} alt="Ideais" width="250" height="300"
+                                             style={{
+                                                 display: "block",
+                                                 marginLeft: "auto",
+                                                 marginRight: "auto",
+                                                 width: "60%",
+                                                 height: matches ? "130px" : "200px",
+                                                 maxWidth: "100%",
+                                             }}></img>
+                                        <div className="desc">{livrox.nome}</div>
+                                    </Item>
+                                </Grid>
+                            ))}
 
-                    </Grid>
+                        </Grid>
+                    </Box>
                 </Box>
             </div>
         </div>

@@ -15,7 +15,7 @@ import logoConfig from '../imagens/ic_configuracoes_1.svg';
 import logoAgenda from '../imagens/ic_agenda_1.svg';
 import logoCantinho from '../imagens/cantinho.png';
 import {useNavigate} from "react-router-dom";
-import {AppBar, Toolbar} from "@mui/material";
+import {AppBar, Toolbar, useMediaQuery} from "@mui/material";
 import Typography from '@mui/material/Typography';
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from '@mui/icons-material/Logout';
@@ -72,8 +72,10 @@ const MenuPrincipal = () => {
         goBack()
     }
 
+    const matches = useMediaQuery('(max-width:600px)');
+
     return (
-        <div>
+        <div style={{position: 'fixed'}}>
 
             <Box sx={{flexGrow: 1}}>
                 <AppBar position="static" enableColorOnDark>
@@ -100,115 +102,197 @@ const MenuPrincipal = () => {
 
             <div className="nome">Olá {nome}</div>
             <div>
-                <Box sx={{flexGrow: 1, margin: 2}}>
+                <Box sx={{maxHeight: '88vh', overflow: 'auto'}}>
+                    <Box sx={{flexGrow: 1, margin: 2}}>
 
-                    <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
+                        <Grid container spacing={{xs: 2, sm: 2, md: 2}} columns={{xs: 12, sm: 10, md: 8}}
+                              color="inherit">
 
-                        <Grid item xs={2} key={4}>
-                            <Item className={"x"} onClick={() => {
-                                handleClickConfig()
-                            }}>
-                                <img src={logoConfig} alt="Cavaleiro Fiel" width="300" height="200"
-                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
-                                <div className="desc">Configurações</div>
-                            </Item>
+                            <Grid item xs={6} sm={6} md={2} key={1}>
+                                <Item className={"x"} onClick={() => {
+                                    handleClickConfig()
+                                }}>
+                                    <img src={logoConfig} alt="Cavaleiro Fiel"
+                                         style={{
+                                             display: "block",
+                                             marginLeft: "auto",
+                                             marginRight: "auto",
+                                             width: "60%",
+                                             height: matches ? "100px" : "200px",
+                                             maxWidth: "100%"
+                                         }}
+                                    />
+                                    <div className="desc">Configurações</div>
+                                </Item>
+                            </Grid>
+
+                            <Grid item xs={6} sm={6} md={2} key={2}>
+                                <Item className={"x"} onClick={() => {
+                                    handleClickClasses()
+                                }}>
+                                    <img src={classes} alt="Especialidades" width="300" height="100"
+                                         style={{
+                                             display: "block",
+                                             marginLeft: "auto",
+                                             marginRight: "auto",
+                                             width: "60%",
+                                             height: matches ? "100px" : "200px",
+                                             maxWidth: "100%"
+                                         }}
+                                    />
+                                    <div className="desc">Classes</div>
+                                </Item>
+                            </Grid>
+
+
+                            <Grid item xs={6} sm={6} md={2} key={3}>
+                                <Item className={"x"} onClick={() => {
+                                    handleClickEspecialidades()
+                                }}>
+                                    <img src={espec} alt="Especialidades" width="300" height="100"
+                                         style={{
+                                             display: "block",
+                                             marginLeft: "auto",
+                                             marginRight: "auto",
+                                             width: "60%",
+                                             height: matches ? "100px" : "200px",
+                                             maxWidth: "100%"
+                                         }}
+                                    />
+                                    <div className="desc">Especialidades</div>
+                                </Item>
+                            </Grid>
+
+                            <Grid item xs={6} sm={6} md={2} key={4}>
+                                <Item className={"x"} onClick={() => {
+                                    handleClickIdeais()
+                                }}>
+                                    <img src={logoIdeais} alt="Ideais" width="300" height="100"
+                                         style={{
+                                             display: "block",
+                                             marginLeft: "auto",
+                                             marginRight: "auto",
+                                             width: "60%",
+                                             height: matches ? "100px" : "200px",
+                                             maxWidth: "100%"
+                                         }}
+                                    />
+                                    <div className="desc">Ideais</div>
+                                </Item>
+                            </Grid>
+
+                            <Grid item xs={6} sm={6} md={2} key={5}>
+                                <Item className={"x"} onClick={() => {
+                                    handleClickLivros()
+                                }}>
+                                    <img src={logoLivros} alt="Livros" width="300" height="100"
+                                         style={{
+                                             display: "block",
+                                             marginLeft: "auto",
+                                             marginRight: "auto",
+                                             width: "60%",
+                                             height: matches ? "100px" : "200px",
+                                             maxWidth: "100%"
+                                         }}
+                                    />
+                                    <div className="desc">Livros</div>
+                                </Item>
+                            </Grid>
+
+                            <Grid item xs={6} sm={6} md={2} key={6}>
+                                <Item className={"x"} onClick={() => {
+                                    handleClickLenco()
+                                }}>
+                                    <img src={logoLenco} alt="Lenço" width="300" height="100"
+                                         style={{
+                                             display: "block",
+                                             marginLeft: "auto",
+                                             marginRight: "auto",
+                                             width: "60%",
+                                             height: matches ? "100px" : "200px",
+                                             maxWidth: "100%"
+                                         }}
+                                    />
+                                    <div className="desc">Prova do Lenço</div>
+                                </Item>
+                            </Grid>
+
+
+                            <Grid item xs={6} sm={6} md={2} key={7}>
+                                <Item className={"x"} onClick={() => {
+                                    handleClickCavaleiro()
+                                }}>
+                                    <img src={logoCavaleiro} alt="Cavaleiro Fiel" width="300" height="100"
+                                         style={{
+                                             display: "block",
+                                             marginLeft: "auto",
+                                             marginRight: "auto",
+                                             width: "60%",
+                                             height: matches ? "100px" : "200px",
+                                             maxWidth: "100%"
+                                         }}
+                                    />
+                                    <div className="desc">Cavaleiro Fiel</div>
+                                </Item>
+                            </Grid>
+
+                            <Grid item xs={6} sm={6} md={2} key={8}>
+                                <Item className={"x"} onClick={() => {
+                                    handleClickAgenda()
+                                }}>
+                                    <img src={logoAgenda} alt="Agenda" width="300" height="100"
+                                         style={{
+                                             display: "block",
+                                             marginLeft: "auto",
+                                             marginRight: "auto",
+                                             width: "60%",
+                                             height: matches ? "100px" : "200px",
+                                             maxWidth: "100%"
+                                         }}
+                                    />
+                                    <div className="desc">Agenda do Clube</div>
+                                </Item>
+                            </Grid>
+
+                            <Grid item xs={6} sm={6} md={2} key={9}>
+                                <Item className={"x"} onClick={() => {
+                                    handleClickAnoB()
+                                }}>
+                                    <img src={AnoB} alt="Agenda" width="300" height="100"
+                                         style={{
+                                             display: "block",
+                                             marginLeft: "auto",
+                                             marginRight: "auto",
+                                             width: "60%",
+                                             height: matches ? "100px" : "200px",
+                                             maxWidth: "100%"
+                                         }}
+                                    />
+                                    <div className="desc">Ano Bíblico</div>
+                                </Item>
+                            </Grid>
+
+                            {(funcao == 1 || funcao == 2 || funcao == 3 || funcao == 4 || funcao == 5) &&
+                                <Grid item xs={6} sm={6} md={2} key={10}>
+                                    <Item className={"x"} onClick={() => {
+                                        handleClickCantinho()
+                                    }}>
+                                        <img src={logoCantinho} alt="Agenda" height="100"
+                                             style={{
+                                                 display: "block",
+                                                 marginLeft: "auto",
+                                                 marginRight: "auto",
+                                                 width: "60%",
+                                                 height: matches ? "100px" : "200px",
+                                                 maxWidth: "100%"
+                                             }}></img>
+                                        <div className="desc">Cantinho da Unidade</div>
+                                    </Item>
+                                </Grid>}
+
+
                         </Grid>
-
-                        <Grid item xs={2}>
-                            <Item className={"x"} onClick={() => {
-                                handleClickClasses()
-                            }}>
-                                <img src={classes} alt="Especialidades" width="300" height="200"
-                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
-                                <div className="desc">Classes</div>
-                            </Item>
-                        </Grid>
-
-
-                        <Grid item xs={2}>
-                            <Item className={"x"} onClick={() => {
-                                handleClickEspecialidades()
-                            }}>
-                                <img src={espec} alt="Especialidades" width="300" height="200"
-                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
-                                <div className="desc">Especialidades</div>
-                            </Item>
-                        </Grid>
-
-                        <Grid item xs={2} key={2}>
-                            <Item className={"x"} onClick={() => {
-                                handleClickIdeais()
-                            }}>
-                                <img src={logoIdeais} alt="Ideais" width="300" height="200"
-                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
-                                <div className="desc">Ideais</div>
-                            </Item>
-                        </Grid>
-
-                        <Grid item xs={2} key={3}>
-                            <Item className={"x"} onClick={() => {
-                                handleClickLivros()
-                            }}>
-                                <img src={logoLivros} alt="Livros" width="300" height="200"
-                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
-                                <div className="desc">Livros</div>
-                            </Item>
-                        </Grid>
-
-                        <Grid item xs={2} key={4}>
-                            <Item className={"x"} onClick={() => {
-                                handleClickLenco()
-                            }}>
-                                <img src={logoLenco} alt="Lenço" width="300" height="200"
-                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
-                                <div className="desc">Prova do Lenço</div>
-                            </Item>
-                        </Grid>
-
-
-                        <Grid item xs={2} key={4}>
-                            <Item className={"x"} onClick={() => {
-                                handleClickCavaleiro()
-                            }}>
-                                <img src={logoCavaleiro} alt="Cavaleiro Fiel" width="300" height="200"
-                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
-                                <div className="desc">Cavaleiro Fiel</div>
-                            </Item>
-                        </Grid>
-
-                        <Grid item xs={2} key={4}>
-                            <Item className={"x"} onClick={() => {
-                                handleClickAgenda()
-                            }}>
-                                <img src={logoAgenda} alt="Agenda" width="300" height="200"
-                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
-                                <div className="desc">Agenda do Clube</div>
-                            </Item>
-                        </Grid>
-
-                        <Grid item xs={2} key={4}>
-                            <Item className={"x"} onClick={() => {
-                                handleClickAnoB()
-                            }}>
-                                <img src={AnoB} alt="Agenda" width="300" height="200"
-                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
-                                <div className="desc">Ano Bíblico</div>
-                            </Item>
-                        </Grid>
-
-                        {(funcao == 1 || funcao == 2 || funcao == 3 || funcao == 4 || funcao == 5) &&
-                        <Grid item xs={2} key={4}>
-                            <Item className={"x"} onClick={() => {
-                                handleClickCantinho()
-                            }}>
-                                <img src={logoCantinho} alt="Agenda" width="300" height="200"
-                                     style={{display: "block", marginLeft: "auto", marginRight: "auto", width: "60%"}}></img>
-                                <div className="desc">Cantinho da Unidade</div>
-                            </Item>
-                        </Grid>}
-
-
-                    </Grid>
+                    </Box>
                 </Box>
             </div>
         </div>

@@ -88,9 +88,10 @@ const Agenda = () => {
 
 
     return (
-        <div>
-            <Box sx={{flexGrow: 1}}>
-                <AppBar position="static" enableColorOnDark>
+        <div style={{position: 'fixed', width: '100%'}}>
+
+            <Box sx={{flexGrow: 1}} style={{width: '100%'}}>
+                <AppBar position="static" enableColorOnDark style={{width: '100%'}}>
                     <Toolbar>
                         <IconButton size="large"
                                     edge="start"
@@ -115,32 +116,36 @@ const Agenda = () => {
                 </AppBar>
             </Box>
             <div>
-                <Box id={"corpo"} sx={{flexGrow: 1, margin: 2}}>
-                    <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
-                        {livrosList1.map((livrox, i) => (
-                            <Grid justifyContent="flex-end" item xs={12} key={i}>
-                                {i==0 &&
-                                    <Item id={livrox.id} className={"xx"} style={{backgroundColor: "#227C70"}}>
-                                    <div className="title">{livrox.titulo}</div>
-                                    <div className="title">Data
-                                        Inicial: {livrox.datade.date}/{livrox.datade.month + 1}/{livrox.datade.year + 1900}</div>
-                                    <div className="title">Data
-                                        Final: {livrox.datapara.date}/{livrox.datapara.month + 1}/{livrox.datapara.year + 1900}</div>
-                                </Item>}
-                                {i>0 &&
-                                    <Item id={livrox.id} className={"xx"}>
-                                        <div className="title">{livrox.titulo}</div>
-                                        <div style={{color: "gray"}}>{livrox.descricao}</div>
-                                        <div style={{color: "gray"}}>Data
-                                            Inicial: {livrox.datade.date}/{livrox.datade.month + 1}/{livrox.datade.year + 1900}</div>
-                                        <div style={{color: "gray"}}>Data
-                                            Final: {livrox.datapara.date}/{livrox.datapara.month + 1}/{livrox.datapara.year + 1900}</div>
-                                    </Item>}
-                            </Grid>
-                        ))}
+                <Box sx={{maxHeight: '88vh', overflow: 'auto'}}>
+                    <Box sx={{flexGrow: 1, margin: 2}}>
+
+                        <Grid container spacing={{xs: 2, sm: 2, md: 2}} columns={{xs: 12, sm: 10, md: 8}}
+                              color="inherit">
+                            {livrosList1.map((livrox, i) => (
+                                <Grid justifyContent="flex-end" item xs={12} key={i}>
+                                    {i == 0 &&
+                                        <Item id={livrox.id} className={"xx"} style={{backgroundColor: "#227C70"}}>
+                                            <div className="title">{livrox.titulo}</div>
+                                            <div className="title">Data
+                                                Inicial: {livrox.datade.date}/{livrox.datade.month + 1}/{livrox.datade.year + 1900}</div>
+                                            <div className="title">Data
+                                                Final: {livrox.datapara.date}/{livrox.datapara.month + 1}/{livrox.datapara.year + 1900}</div>
+                                        </Item>}
+                                    {i > 0 &&
+                                        <Item id={livrox.id} className={"xx"}>
+                                            <div className="title">{livrox.titulo}</div>
+                                            <div style={{color: "gray"}}>{livrox.descricao}</div>
+                                            <div style={{color: "gray"}}>Data
+                                                Inicial: {livrox.datade.date}/{livrox.datade.month + 1}/{livrox.datade.year + 1900}</div>
+                                            <div style={{color: "gray"}}>Data
+                                                Final: {livrox.datapara.date}/{livrox.datapara.month + 1}/{livrox.datapara.year + 1900}</div>
+                                        </Item>}
+                                </Grid>
+                            ))}
 
 
-                    </Grid>
+                        </Grid>
+                    </Box>
                 </Box>
             </div>
         </div>

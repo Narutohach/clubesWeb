@@ -7,12 +7,13 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import logoConfig from '../imagens/password.svg';
 import {useNavigate} from "react-router-dom";
-import {AppBar, Toolbar} from "@mui/material";
+import {AppBar, Toolbar, useMediaQuery} from "@mui/material";
 import Typography from '@mui/material/Typography';
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from '@mui/icons-material/ArrowBack';
 import Group from '@mui/icons-material/Group';
 import User from '@mui/icons-material/AccountCircle';
+import {AccountCircle, Password, People} from "@mui/icons-material";
 
 const Configuracoes = () => {
 
@@ -50,11 +51,13 @@ const Configuracoes = () => {
 
     const handleClickUsers = () => navigate('/config/users');
 
-    return (
-        <div>
+    const matches = useMediaQuery('(max-width:600px)');
 
-            <Box sx={{flexGrow: 1}}>
-                <AppBar position="static" enableColorOnDark>
+    return (
+        <div style={{position: 'fixed', width: '100%'}}>
+
+            <Box sx={{flexGrow: 1}} style={{ width: '100%' }}>
+                <AppBar position="static" enableColorOnDark style={{ width: '100%' }}>
                     <Toolbar>
 
                         <IconButton size="large"
@@ -76,61 +79,69 @@ const Configuracoes = () => {
                 </AppBar>
             </Box>
             <div>
-                <Box sx={{flexGrow: 1, margin: 2}}>
+                <Box sx={{maxHeight: '88vh', overflow: 'auto'}}>
+                    <Box sx={{flexGrow: 1, margin: 2}}>
 
-                    <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
+                        <Grid container spacing={{xs: 2, sm: 2, md: 2}} columns={{xs: 12, sm: 10, md: 8}}
+                              color="inherit">
 
-                        <Grid item xs={2} key={4}>
-                            <Item className={"x"} onClick={() => {
-                                handleClickSenha()
-                            }}>
-                                <img src={logoConfig} alt="Alterar Senha" width="300" height="200"
-                                     style={{
-                                         display: "block",
-                                         marginLeft: "auto",
-                                         marginRight: "auto",
-                                         width: "60%"
-                                     }}></img>
-                                <div className="desc">Alterar Senha</div>
-                            </Item>
+                            <Grid item xs={6} sm={6} md={2} key={1}>
+                                <Item className={"x"} onClick={() => {
+                                    handleClickSenha()
+                                }}>
+                                    <Password src={logoConfig} alt="Alterar Senha" width="300" height="200"
+                                         style={{
+                                             display: "block",
+                                             marginLeft: "auto",
+                                             marginRight: "auto",
+                                             width: "60%",
+                                             height: matches ? "100px" : "200px",
+                                             maxWidth: "100%",
+                                             color: "black"
+                                         }}></Password>
+                                    <div className="desc">Alterar Senha</div>
+                                </Item>
+                            </Grid>
+
+                            {(funcao == 1 || funcao == 2 || funcao == 3 || funcao == 5) &&
+                                <Grid item xs={6} sm={6} md={2} key={2}>
+                                    <Item className={"x"} onClick={() => {
+                                        handleClickUnidades()
+                                    }}>
+                                        <People alt="Alterar Senha" width="300" height="200" sx={{
+                                            display: "block",
+                                            marginLeft: "auto",
+                                            marginRight: "auto",
+                                            width: "60%",
+                                            height: matches ? "100px" : "200px",
+                                            maxWidth: "100%",
+                                            color: "black"
+                                        }}><Group/></People>
+                                        <div className="desc">Unidades</div>
+                                    </Item>
+                                </Grid>}
+
+                            {(funcao == 1 || funcao == 2 || funcao == 3 || funcao == 5) &&
+                                <Grid item xs={6} sm={6} md={2} key={3}>
+                                    <Item className={"x"} onClick={() => {
+                                        handleClickUsers()
+                                    }}>
+                                        <AccountCircle alt="Alterar Senha" width="300" height="200" sx={{
+                                            display: "block",
+                                            marginLeft: "auto",
+                                            marginRight: "auto",
+                                            width: "60%",
+                                            height: matches ? "100px" : "200px",
+                                            maxWidth: "100%",
+                                            color: "black"
+                                        }}><User/></AccountCircle>
+                                        <div className="desc">Usuários</div>
+                                    </Item>
+                                </Grid>}
+
+
                         </Grid>
-
-                        {(funcao == 1 || funcao == 2 || funcao == 3 || funcao == 5) &&
-                            <Grid item xs={2} key={4}>
-                                <Item className={"x"} onClick={() => {
-                                    handleClickUnidades()
-                                }}>
-                                    <svg alt="Alterar Senha" width="300" height="200" color="black" sx={{
-                                        fontSize: 40,
-                                        display: "block",
-                                        marginLeft: "auto",
-                                        marginRight: "auto",
-                                        width: "60%",
-                                        color: "black"
-                                    }}><Group/></svg>
-                                    <div className="desc">Unidades</div>
-                                </Item>
-                            </Grid>}
-
-                        {(funcao == 1 || funcao == 2 || funcao == 3 || funcao == 5) &&
-                            <Grid item xs={2} key={4}>
-                                <Item className={"x"} onClick={() => {
-                                    handleClickUsers()
-                                }}>
-                                    <svg alt="Alterar Senha" width="300" height="200" color="black" sx={{
-                                        fontSize: 40,
-                                        display: "block",
-                                        marginLeft: "auto",
-                                        marginRight: "auto",
-                                        width: "60%",
-                                        color: "black"
-                                    }}><User/></svg>
-                                    <div className="desc">Usuários</div>
-                                </Item>
-                            </Grid>}
-
-
-                    </Grid>
+                    </Box>
                 </Box>
             </div>
         </div>

@@ -224,9 +224,10 @@ const Capitulos = () => {
 
 
     return (
-        <div>
-            <Box sx={{flexGrow: 1}}>
-                <AppBar position="static" enableColorOnDark>
+        <div style={{position: 'fixed', width: '100%'}}>
+
+            <Box sx={{flexGrow: 1}} style={{width: '100%'}}>
+                <AppBar position="static" enableColorOnDark style={{width: '100%'}}>
                     <Toolbar>
                         <IconButton size="large"
                                     edge="start"
@@ -252,20 +253,24 @@ const Capitulos = () => {
                 </AppBar>
             </Box>
             <div>
-                <Box id={"corpo"} sx={{flexGrow: 1, margin: 2}}>
-                    <Grid container spacing={{xs: 2, md: 2}} columns={{xs: 2, sm: 8, md: 12}} color="inherit">
-                        {livrosList.map((livrox, i) => (
-                            <Grid justifyContent="flex-end" item xs={12} key={i}>
-                                <Item id={livrox.id} className={"xx"} onClick={() => {
-                                    handleClickCapitulos(livrox.id, livrox.questão, livrox.link, livrox)
-                                }}>
-                                    <div className="title">{livrox.questão}</div>
-                                    <div className="desc">{livrox.descricao}</div>
-                                </Item>
-                            </Grid>
-                        ))}
+                <Box sx={{maxHeight: '88vh', overflow: 'auto'}}>
+                    <Box sx={{flexGrow: 1, margin: 2}}>
 
-                    </Grid>
+                        <Grid container spacing={{xs: 2, sm: 2, md: 2}} columns={{xs: 12, sm: 10, md: 8}}
+                              color="inherit">
+                            {livrosList.map((livrox, i) => (
+                                <Grid justifyContent="flex-end" item xs={12} key={i}>
+                                    <Item id={livrox.id} className={"xx"} onClick={() => {
+                                        handleClickCapitulos(livrox.id, livrox.questão, livrox.link, livrox)
+                                    }}>
+                                        <div className="title">{livrox.questão}</div>
+                                        <div className="desc">{livrox.descricao}</div>
+                                    </Item>
+                                </Grid>
+                            ))}
+
+                        </Grid>
+                    </Box>
                 </Box>
             </div>
         </div>
