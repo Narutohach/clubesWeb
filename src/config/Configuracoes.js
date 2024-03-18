@@ -7,13 +7,15 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import logoConfig from '../imagens/password.svg';
 import {useNavigate} from "react-router-dom";
-import {AppBar, Toolbar, useMediaQuery} from "@mui/material";
+import {AppBar, Card, CardActionArea, CardContent, Toolbar, useMediaQuery} from "@mui/material";
 import Typography from '@mui/material/Typography';
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from '@mui/icons-material/ArrowBack';
 import Group from '@mui/icons-material/Group';
 import User from '@mui/icons-material/AccountCircle';
 import {AccountCircle, Password, People} from "@mui/icons-material";
+import espec from "../imagens/ic_especialidades.svg";
+import {ThemeContext} from "@emotion/react";
 
 const Configuracoes = () => {
 
@@ -53,11 +55,13 @@ const Configuracoes = () => {
 
     const matches = useMediaQuery('(max-width:600px)');
 
+
+
     return (
         <div style={{position: 'fixed', width: '100%'}}>
 
-            <Box sx={{flexGrow: 1}} style={{ width: '100%' }}>
-                <AppBar position="static" enableColorOnDark style={{ width: '100%' }}>
+            <Box sx={{flexGrow: 1}} style={{width: '100%'}}>
+                <AppBar position="static" style={{width: '100%'}}>
                     <Toolbar>
 
                         <IconButton size="large"
@@ -85,58 +89,84 @@ const Configuracoes = () => {
                         <Grid container spacing={{xs: 2, sm: 2, md: 2}} columns={{xs: 12, sm: 10, md: 8}}
                               color="inherit">
 
-                            <Grid item xs={6} sm={6} md={2} key={1}>
-                                <Item className={"x"} onClick={() => {
-                                    handleClickSenha()
-                                }}>
-                                    <Password src={logoConfig} alt="Alterar Senha" width="300" height="200"
-                                         style={{
-                                             display: "block",
-                                             marginLeft: "auto",
-                                             marginRight: "auto",
-                                             width: "60%",
-                                             height: matches ? "100px" : "200px",
-                                             maxWidth: "100%",
-                                             color: "black"
-                                         }}></Password>
-                                    <div className="desc">Alterar Senha</div>
-                                </Item>
+                            <Grid item xs={6} sm={3} md={2} key={1}>
+
+                                <Card sx={{width: '100%', height: '100%'}}>
+                                    <CardActionArea style={{height: '100%'}} onClick={() => {
+                                        handleClickSenha()
+                                    }}>
+                                        <Password src={logoConfig} alt="Alterar Senha" width="300" height="200"
+                                                  style={{
+                                                      display: "block",
+                                                      marginLeft: "auto",
+                                                      marginRight: "auto",
+                                                      width: "60%",
+                                                      height: matches ? "100px" : "200px",
+                                                      maxWidth: "100%",
+                                                  }}></Password>
+                                        <CardContent>
+                                            <Typography gutterBottom variant="h5" align="center"
+                                                        style={{fontSize: 'calc(10px + 2vmin)'}}>
+                                                Alterar Senha
+                                            </Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                </Card>
+
+
+
                             </Grid>
 
-                            {(funcao == 1 || funcao == 2 || funcao == 3 || funcao == 5) &&
-                                <Grid item xs={6} sm={6} md={2} key={2}>
-                                    <Item className={"x"} onClick={() => {
-                                        handleClickUnidades()
-                                    }}>
-                                        <People alt="Alterar Senha" width="300" height="200" sx={{
-                                            display: "block",
-                                            marginLeft: "auto",
-                                            marginRight: "auto",
-                                            width: "60%",
-                                            height: matches ? "100px" : "200px",
-                                            maxWidth: "100%",
-                                            color: "black"
-                                        }}><Group/></People>
-                                        <div className="desc">Unidades</div>
-                                    </Item>
+                            {(funcao == 0 ||funcao == 1 || funcao == 2 || funcao == 3 || funcao == 5) &&
+                                <Grid item xs={6} sm={3} md={2} key={2}>
+
+                                    <Card sx={{width: '100%', height: '100%'}}>
+                                        <CardActionArea style={{height: '100%'}} onClick={() => {
+                                            handleClickUnidades()
+                                        }}>
+                                            <People alt="Alterar Senha" width="300" height="200" sx={{
+                                                display: "block",
+                                                marginLeft: "auto",
+                                                marginRight: "auto",
+                                                width: "60%",
+                                                height: matches ? "100px" : "200px",
+                                                maxWidth: "100%"
+                                            }}><Group/></People>
+                                            <CardContent>
+                                                <Typography gutterBottom variant="h5" align="center"
+                                                            style={{fontSize: 'calc(10px + 2vmin)'}}>
+                                                    Unidades
+                                                </Typography>
+                                            </CardContent>
+                                        </CardActionArea>
+                                    </Card>
+
                                 </Grid>}
 
-                            {(funcao == 1 || funcao == 2 || funcao == 3 || funcao == 5) &&
+                            {(funcao == 0 || funcao == 1 || funcao == 2 || funcao == 3 || funcao == 5) &&
                                 <Grid item xs={6} sm={6} md={2} key={3}>
-                                    <Item className={"x"} onClick={() => {
-                                        handleClickUsers()
-                                    }}>
-                                        <AccountCircle alt="Alterar Senha" width="300" height="200" sx={{
-                                            display: "block",
-                                            marginLeft: "auto",
-                                            marginRight: "auto",
-                                            width: "60%",
-                                            height: matches ? "100px" : "200px",
-                                            maxWidth: "100%",
-                                            color: "black"
-                                        }}><User/></AccountCircle>
-                                        <div className="desc">Usuários</div>
-                                    </Item>
+
+                                    <Card sx={{width: '100%', height: '100%'}}>
+                                        <CardActionArea style={{height: '100%'}} onClick={() => {
+                                            handleClickUsers()
+                                        }}>
+                                            <AccountCircle alt="Alterar Senha" width="300" height="200" sx={{
+                                                display: "block",
+                                                marginLeft: "auto",
+                                                marginRight: "auto",
+                                                width: "60%",
+                                                height: matches ? "100px" : "200px",
+                                                maxWidth: "100%"
+                                            }}><User/></AccountCircle>
+                                            <CardContent>
+                                                <Typography gutterBottom variant="h5" align="center"
+                                                            style={{fontSize: 'calc(10px + 2vmin)'}}>
+                                                    Usuários
+                                                </Typography>
+                                            </CardContent>
+                                        </CardActionArea>
+                                    </Card>
+
                                 </Grid>}
 
 

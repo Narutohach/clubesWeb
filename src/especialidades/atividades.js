@@ -67,7 +67,7 @@ const Atividades = () => {
                         } else {
 
                             lx = lx + 1;
-                            document.getElementById(data.id).style.background = "#00dd0d";
+                            document.getElementById(data.id).style.background = "#006D31";
                         }
                     }
 
@@ -184,7 +184,7 @@ const Atividades = () => {
             sessionStorage.setItem("livroIdz", livrox.leitura);
             sessionStorage.setItem("origemz", "leitura");
             sessionStorage.setItem("nomeLivroz", livrox.descricao);
-            navigate('/livros/capitulos', {state: {id: 7, color: 'green'}});
+            navigate('/livros/capitulos', {state: {id: 7, color: '#006D31'}});
         }
 
         if (livrox.tipo === 14) {
@@ -229,7 +229,7 @@ const Atividades = () => {
                             } else {
 
                                 lx = lx + 1;
-                                document.getElementById(data.id).style.background = "#00dd0d";
+                                document.getElementById(data.id).style.background = "#006D31";
                             }
                         }
 
@@ -250,7 +250,7 @@ const Atividades = () => {
         <div style={{position: 'fixed', width: '100%'}}>
 
             <Box sx={{flexGrow: 1}} style={{width: '100%'}}>
-                <AppBar position="static" enableColorOnDark style={{width: '100%'}}>
+                <AppBar position="static"  style={{width: '100%'}}>
                     <Toolbar>
                         <IconButton size="large"
                                     edge="start"

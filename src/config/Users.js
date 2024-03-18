@@ -5,14 +5,14 @@ import {experimentalStyled as styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import {AppBar, Dialog, DialogActions, DialogContent, Fab, FilledInput, Input, Menu, Toolbar} from "@mui/material";
+import {AppBar, Dialog, DialogActions, DialogContent, Fab, Input, Menu, Toolbar} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/ArrowBack";
 import FilterIcon from "@mui/icons-material/FilterList";
 import {useNavigate} from "react-router-dom";
 import {firestore} from "../firebase_setup/firebase";
-import {collection, getDocs, query, where, orderBy, doc, setDoc, onSnapshot } from "@firebase/firestore";
+import {collection, doc, getDocs, onSnapshot, orderBy, query, setDoc, where} from "@firebase/firestore";
 import {loginConverter} from "../objetos/logins";
 import MenuItem from "@mui/material/MenuItem";
 import AddIcon from "@mui/icons-material/Add";
@@ -22,10 +22,8 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import InputLabel from "@mui/material/InputLabel";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import CryptoJS from "crypto-js";
 
 const Users = (effect, deps) => {
 
@@ -60,7 +58,6 @@ const Users = (effect, deps) => {
     useEffect(() => {
 
 
-
         const logins = query(collection(firestore, "LOGINS"), where("clubeId", "==", sessionStorage.getItem("clubeId")),
             orderBy("nome")).withConverter(loginConverter);
         const unsubscribe = onSnapshot(logins, (querySnapshot) => {
@@ -72,7 +69,6 @@ const Users = (effect, deps) => {
             setUnidadesList(ll)
 
         });
-
 
 
     }, []);
@@ -88,6 +84,9 @@ const Users = (effect, deps) => {
 
     function getFuncao(i) {
         switch (i) {
+            case 0: {
+                return "Regional";
+            }
             case 1: {
                 return "Diretor";
             }
@@ -117,7 +116,7 @@ const Users = (effect, deps) => {
 
     function retCor(i) {
         if (i) {
-            return "black";
+            return "none";
         } else {
             return "red";
         }
@@ -197,7 +196,8 @@ const Users = (effect, deps) => {
 
 
     const asyncFunc = async () => {
-        const logins = query(collection(firestore, "LOGINS"), where("nome", "==", unit)).withConverter(loginConverter);
+        const logins = query(collection(firestore, "LOGINS"), where("nome", "==", unit),
+            where("clubeId", "==", sessionStorage.getItem("clubeId"))).withConverter(loginConverter);
 
         const querySnapshotLogins = await getDocs(logins);
         if (!querySnapshotLogins.empty) {
@@ -208,7 +208,7 @@ const Users = (effect, deps) => {
             const loginsx = query(collection(firestore, "LOGINS"), where("login", "==", loginx),
                 where("clubeId", "==", sessionStorage.getItem("clubeId"))).withConverter(loginConverter);
 
-            const querySnapshotLoginsx = await getDocs(logins);
+            const querySnapshotLoginsx = await getDocs(loginsx);
 
             if (!querySnapshotLoginsx.empty) {
                 alert("Já existe usuário cadastrado com esse Login")
@@ -245,9 +245,6 @@ const Users = (effect, deps) => {
                 const cipherString = CryptoJS.enc.Hex.stringify(cipherResult.ciphertext);
 
 
-
-
-
                 await setDoc(doc(referencia, id), {
                     loginId: id,
                     nome: unit,
@@ -271,7 +268,7 @@ const Users = (effect, deps) => {
         <div>
 
             <Box sx={{flexGrow: 1}}>
-                <AppBar position="static" enableColorOnDark>
+                <AppBar position="static" >
                     <Toolbar>
 
                         <IconButton size="large"

@@ -27,6 +27,12 @@ import Button from "@mui/material/Button";
 
 const TelaAnoBiblico = () => {
 
+    useEffect(() => {
+        if (!sessionStorage.getItem('id')) {
+            window.location = '/';
+        }
+    }, [])
+
 
     const [anoList, setAnoList] = useState([]);
     const [anoList1, setAnoList1] = useState([]);
@@ -184,7 +190,7 @@ const TelaAnoBiblico = () => {
     return (
         <div>
             <Box sx={{flexGrow: 1}}>
-                <AppBar position="static" enableColorOnDark>
+                <AppBar position="static" >
                     <Toolbar>
                         <IconButton size="large"
                                     edge="start"

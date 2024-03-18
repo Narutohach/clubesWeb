@@ -1,7 +1,7 @@
 import {AppBar, Box, Card, CardContent, CircularProgress, IconButton, Toolbar} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
-import React from "react";
+import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import nvi from "../biblia/nvi";
@@ -9,6 +9,12 @@ import {equalTo, onValue, orderByChild, query, ref} from "@firebase/database";
 import {realtime} from "../firebase_setup/firebase";
 
 const TelaAnoBiblicoCapitulos = () => {
+
+    useEffect(() => {
+        if (!sessionStorage.getItem('id')) {
+            window.location = '/';
+        }
+    }, [])
 
 
     const clube = sessionStorage.getItem("clube")
@@ -48,7 +54,7 @@ const TelaAnoBiblicoCapitulos = () => {
     return (
         <div style={{position: 'fixed', width: '100%'}}>
             <Box sx={{flexGrow: 1, width: '100%'}}>
-                <AppBar position="static" enableColorOnDark>
+                <AppBar position="static" >
                     <Toolbar>
                         <IconButton size="large"
                                     edge="start"
@@ -78,7 +84,7 @@ const TelaAnoBiblicoCapitulos = () => {
                                     <Card
                                         id={livrox.id}
                                         className={"xx"}
-                                        style={{backgroundColor: getLido(i + 1) ? "#00dd0d" : "white"}}
+                                        style={{backgroundColor: getLido(i + 1) ? "#006D31" : "none"}}
                                         onClick={() => handleClick(i)}
                                     >
                                         <CardContent style={{position: 'relative'}} sx={{

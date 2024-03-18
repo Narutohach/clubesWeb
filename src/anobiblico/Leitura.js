@@ -9,8 +9,15 @@ import * as React from "react";
 import nvi from "../biblia/nvi";
 import {push, ref, set} from "@firebase/database";
 import {realtime} from "../firebase_setup/firebase";
+import {useEffect} from "react";
 
 const TelaAnoBiblicoLeitura = () => {
+
+    useEffect(() => {
+        if (!sessionStorage.getItem('id')) {
+            window.location = '/';
+        }
+    }, [])
 
     const navigate = useNavigate();
     const goBack = () => {
@@ -64,7 +71,7 @@ const TelaAnoBiblicoLeitura = () => {
     return (
         <div style={{position: 'fixed', width: '100%'}}>
             <Box sx={{flexGrow: 1}}>
-                <AppBar position="static" enableColorOnDark>
+                <AppBar position="static" >
                     <Toolbar>
                         <IconButton size="large"
                                     edge="start"

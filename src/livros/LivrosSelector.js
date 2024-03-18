@@ -1,18 +1,19 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import '../menu/MenuPrincipal.css';
 import {experimentalStyled as styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import {AppBar, Toolbar, useMediaQuery} from "@mui/material";
+import {AppBar, Card, CardActionArea, CardContent, Toolbar, useMediaQuery} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/ArrowBack";
 import {useNavigate} from "react-router-dom";
-import {getDatabase, ref, onValue} from "@firebase/database"
+import {onValue, ref} from "@firebase/database"
 import {realtime} from "../firebase_setup/firebase"
-import {useEffect, useState} from "react";
-import MenuItem from "@mui/material/MenuItem";
+import logoConfigWhite from "../imagens/ic_configuracoes_white.svg";
+import logoConfig from "../imagens/ic_configuracoes_1.svg";
 
 
 const LivrosSelector = () => {
@@ -75,7 +76,7 @@ const LivrosSelector = () => {
         <div style={{position: 'fixed', width: '100%'}}>
 
             <Box sx={{flexGrow: 1}} style={{width: '100%'}}>
-                <AppBar position="static" enableColorOnDark style={{width: '100%'}}>
+                <AppBar position="static"  style={{width: '100%'}}>
                     <Toolbar>
                         <IconButton size="large"
                                     edge="start"
@@ -100,24 +101,35 @@ const LivrosSelector = () => {
                         <Grid container spacing={{xs: 2, sm: 2, md: 2}} columns={{xs: 12, sm: 12, md: 12}}
                               color="inherit">
                             {livrosList.map((livrox, i) => (
-                                <Grid justifyContent="flex-end" item xs={6} sm={6} md={2} key={i} style={{
+                                <Grid justifyContent="flex-end" item xs={6} sm={3} md={2} key={i} style={{
                                     display: "flex",
                                     flexWrap: "wrap"
                                 }}>
-                                    <Item className={"x"} onClick={() => {
-                                        handleClickCapitulos(livrox.id, livrox.nome)
-                                    }}>
-                                        <img src={livrox.enderecoImagem} alt="Ideais" width="250" height="300"
-                                             style={{
-                                                 display: "block",
-                                                 marginLeft: "auto",
-                                                 marginRight: "auto",
-                                                 width: "60%",
-                                                 height: matches ? "130px" : "200px",
-                                                 maxWidth: "100%",
-                                             }}></img>
-                                        <div className="desc">{livrox.nome}</div>
-                                    </Item>
+
+                                    <Card sx={{width: '100%', height: '100%'}}>
+                                        <CardActionArea style={{height: '100%'}} onClick={() => {
+                                            handleClickCapitulos(livrox.id, livrox.nome)
+                                        }}>
+                                            <img src={livrox.enderecoImagem} alt="Cavaleiro Fiel"
+                                                 style={{
+                                                     display: "block",
+                                                     marginLeft: "auto",
+                                                     marginRight: "auto",
+                                                     width: "60%",
+                                                     height: matches ? "100px" : "200px",
+                                                     maxWidth: "100%",
+                                                     marginTop: '20px'
+                                                 }}
+                                            />
+                                            <CardContent>
+                                                <Typography gutterBottom variant="h5" align="center"
+                                                            style={{fontSize: 'calc(10px + 2vmin)'}}>
+                                                    {livrox.nome}
+                                                </Typography>
+                                            </CardContent>
+                                        </CardActionArea>
+                                    </Card>
+
                                 </Grid>
                             ))}
 

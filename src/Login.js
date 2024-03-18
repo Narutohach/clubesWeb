@@ -19,11 +19,11 @@ import {firestore} from "./firebase_setup/firebase"
 import {clubeConverter} from "./objetos/clubes"
 import {loginConverter} from "./objetos/logins";
 import {useNavigate} from "react-router-dom";
+import {createTheme} from "@mui/material/styles";
+import {ThemeProvider} from "@mui/system";
+import Paper from "@mui/material/Paper";
 
 const Login = () => {
-
-
-
 
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
@@ -43,7 +43,6 @@ const Login = () => {
 
     const navigate = useNavigate();
     const handleClick = () => navigate('/menu');
-
 
 
     const [todos, setTodos] = useState([]);
@@ -68,6 +67,7 @@ const Login = () => {
 
     }
 
+
     useEffect(() => {
         fetchPost();
     }, [])
@@ -76,6 +76,7 @@ const Login = () => {
     function removeNullBytes(str) {
         return str.split("").filter(char => char.codePointAt(0)).join("")
     }
+
     async function listaLogins() {
         var selecionado = age.getId()
         var clubeNome = age.getName()
@@ -89,12 +90,10 @@ const Login = () => {
         const querySnapshotLogins = await getDocs(logins);
 
 
-
         var valida = 0
 
         querySnapshotLogins.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
-
 
 
             const CryptoJS = require('crypto-js');
@@ -124,8 +123,6 @@ const Login = () => {
             var unidade = doc.data().getUnidade();
 
 
-
-
             var decryptedText = decryptedData.toString(CryptoJS.enc.Utf8);
 
 
@@ -146,11 +143,7 @@ const Login = () => {
             }
 
 
-
-
             valida = 1
-
-
 
 
         });
@@ -184,13 +177,6 @@ const Login = () => {
                 >
                     <TextField fullWidth sx={{m: 1}}
                                value={name}
-                               InputLabelProps={{
-                                   sx: {
-                                       '&.Mui-focused': {
-                                           color: '#227C70', // Cor desejada quando focado
-                                       },
-                                   },
-                               }}
                                label="Username"
                                onChange={(e) => {
                                    setName(e.target.value);
@@ -199,7 +185,7 @@ const Login = () => {
 
 
                     <FormControl fullWidth sx={{m: 1}} variant="outlined">
-                        <InputLabel htmlFor="outlined-adornment-password" >Password</InputLabel>
+                        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                         <OutlinedInput
                             id="outlined-adornment-password"
                             type={showPassword ? 'text' : 'password'}
@@ -247,9 +233,9 @@ const Login = () => {
                 </Box>
 
                 <FormControl sx={{m: 1}}>
-                    <Button variant="contained" color="success"  onClick={() => {
+                    <Button variant="contained" color="success" onClick={() => {
                         listaLogins()
-                    }} disabled = {activeButton}>LOGIN</Button>
+                    }} disabled={activeButton}>LOGIN</Button>
                 </FormControl>
 
 

@@ -4,13 +4,12 @@ import '../menu/MenuPrincipal.css';
 import {experimentalStyled as styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import {AppBar, Toolbar, useMediaQuery} from "@mui/material";
+import {AppBar, Card, CardActionArea, CardContent, Toolbar, useMediaQuery} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/ArrowBack";
 import {useNavigate} from "react-router-dom";
-import {collection, getDoc, query, where, doc} from "@firebase/firestore";
-import {loginConverter} from "../objetos/logins";
+import {doc, getDoc} from "@firebase/firestore";
 import {firestore} from "../firebase_setup/firebase"
 
 import amigo from '../imagens/boton_amigo.png';
@@ -165,7 +164,7 @@ const Classes = () => {
         <div style={{position: 'fixed', width: '100%'}}>
 
             <Box sx={{flexGrow: 1}} style={{width: '100%'}}>
-                <AppBar position="static" enableColorOnDark style={{width: '100%'}}>
+                <AppBar position="static" style={{width: '100%'}}>
                     <Toolbar>
                         <IconButton size="large"
                                     edge="start"
@@ -189,27 +188,38 @@ const Classes = () => {
                 <Box sx={{maxHeight: '88vh', overflow: 'auto'}}>
                     <Box sx={{flexGrow: 1, margin: 2}}>
 
-                        <Grid container spacing={{xs: 2, sm: 2, md: 2}} columns={{xs: 12, sm: 10, md: 8}}
+                        <Grid container spacing={{xs: 2, sm: 2, md: 2}} columns={{xs: 12, sm: 12, md: 12}}
                               color="inherit">
                             {classes.map((livrox, i) => (
-                                <Grid justifyContent="flex-end" item xs={6} sm={6} md={2} key={i} style={{
+                                <Grid justifyContent="flex-end" item xs={6} sm={3} md={2} key={i} style={{
                                     display: "flex",
                                     flexWrap: "wrap"
                                 }}>
-                                    <Item className={"x"} onClick={() => {
-                                        handleClickAtividades(livrox)
-                                    }}>
-                                        <img src={getImagem(livrox)} alt="Ideais" width="250" height="300"
-                                             style={{
-                                                 display: "block",
-                                                 marginLeft: "auto",
-                                                 marginRight: "auto",
-                                                 width: "60%",
-                                                 height: matches ? "90px" : "260px",
-                                                 maxWidth: "100%",
-                                             }}></img>
-                                        <div className="desc" style={{paddingTop: 10}}>{getNome(livrox)}</div>
-                                    </Item>
+
+                                    <Card sx={{width: '100%', height: '100%'}}>
+                                        <CardActionArea style={{height: '100%'}} onClick={() => {
+                                            handleClickAtividades(livrox)
+                                        }}>
+                                            <img src={getImagem(livrox)} alt="Cavaleiro Fiel"
+                                                 style={{
+                                                     display: "block",
+                                                     marginLeft: "auto",
+                                                     marginRight: "auto",
+                                                     width: "60%",
+                                                     height: matches ? "100px" : "200px",
+                                                     maxWidth: "100%",
+                                                     marginTop: '20px'
+                                                 }}
+                                            />
+                                            <CardContent>
+                                                <Typography gutterBottom variant="h5" align="center"
+                                                            style={{fontSize: 'calc(10px + 2vmin)'}}>
+                                                    {getNome(livrox)}
+                                                </Typography>
+                                            </CardContent>
+                                        </CardActionArea>
+                                    </Card>
+
                                 </Grid>
                             ))}
 

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Compose App</title>
+    <script type="module">
+        import {initializeApp} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import {
+            collection,
+            getDocs,
+            getFirestore,
+            orderBy,
+            query
+        } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js"
+        import {getDatabase} from "https://www.gstatic.com/firebasejs/10.8.1//firebase-database.js";
+        import {getStorage} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCBu3wHn3adlXcnWDqIvGuQk18KcM5G9ag",
+            authDomain: "appclubes-18dd5.firebaseapp.com",
+            databaseURL: "https://appclubes-18dd5-default-rtdb.firebaseio.com",
+            projectId: "appclubes-18dd5",
+            storageBucket: "appclubes-18dd5.appspot.com",
+            messagingSenderId: "425275349671",
+            appId: "1:425275349671:web:3b33c5414d3fc0abb75982",
+            measurementId: "G-9YER0C3VC2"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        export const firestore = getFirestore(app)
+
+        export const realtime = getDatabase(app)
+
+        export const storage = getStorage()
+
+
+
+
+    </script>
+
+    <script>
+
+        async function clubes() {
+
+            console.log("Olá, mundo!");
+
+            const q = query(collection(firestore, "CLUBE"), orderBy("clubeNome"));
+
+            <!--            console.log(getDocs(q))-->
+
+            const itens = [
+                { "id": 1, "nome": "Item 1" },
+                { "id": 2, "nome": "Item 2" },
+                { "id": 3, "nome": "Item 3" },
+                { "id": 4, "nome": "Item 4" },
+                { "id": 5, "nome": "Item 5" },
+                { "id": 6, "nome": "Item 6" },
+                { "id": 7, "nome": "Item 7" },
+                { "id": 8, "nome": "Item 8" },
+                { "id": 9, "nome": "Item 9" },
+                { "id": 10, "nome": "Item 10" }
+            ];
+            return JSON.stringify(itens);
+
+        }
+
+        async function getValues() {
+            const itens = [
+                { "id": 1, "nome": "Item 1" },
+                { "id": 2, "nome": "Item 2" },
+                { "id": 3, "nome": "Item 3" },
+                { "id": 4, "nome": "Item 4" },
+                { "id": 5, "nome": "Item 5" },
+                { "id": 6, "nome": "Item 6" },
+                { "id": 7, "nome": "Item 7" },
+                { "id": 8, "nome": "Item 8" },
+                { "id": 9, "nome": "Item 9" },
+                { "id": 10, "nome": "Item 10" }
+            ];
+            return JSON.stringify(itens);
+        }
+
+    </script>
+</head>
+<body>
+<canvas id="ComposeTarget"></canvas>
+</body>
+</html>

@@ -122,3 +122,8 @@ a:active {
         height: 250px; /* Altura desejada para telas grandes */
     }
 }
+
+.card-image {
+    width: 200px;
+    height: 150px;
+}

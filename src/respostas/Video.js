@@ -115,7 +115,7 @@ const Video = () => {
             left: 0,
         }}>
             <Box sx={{flexGrow: 1}}>
-                <AppBar position="static" enableColorOnDark>
+                <AppBar position="static" >
                     <Toolbar>
                         <IconButton size="large"
                                     edge="start"

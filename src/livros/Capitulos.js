@@ -102,7 +102,7 @@ const Capitulos = () => {
                                 } else {
 
                                     lx = lx + 1;
-                                    document.getElementById(data.id).style.background = "#00dd0d";
+                                    document.getElementById(data.id).style.background = "#006D31";
                                 }
                             }
 
@@ -227,7 +227,7 @@ const Capitulos = () => {
         <div style={{position: 'fixed', width: '100%'}}>
 
             <Box sx={{flexGrow: 1}} style={{width: '100%'}}>
-                <AppBar position="static" enableColorOnDark style={{width: '100%'}}>
+                <AppBar position="static"  style={{width: '100%'}}>
                     <Toolbar>
                         <IconButton size="large"
                                     edge="start"

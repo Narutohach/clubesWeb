@@ -1,16 +1,37 @@
-import {AppBar, Box, Card, CardContent, CircularProgress, Fab, IconButton, Toolbar} from "@mui/material";
+import {
+    AppBar,
+    Box,
+    Fab,
+    IconButton,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Toolbar
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@mui/material/Typography";
-import React from "react";
-import nvi from "../biblia/nvi";
+import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Unstable_Grid2";
 import {equalTo, onValue, orderByChild, query, ref} from "@firebase/database";
 import {realtime} from "../firebase_setup/firebase";
 import {PictureAsPdf} from "@mui/icons-material";
 import certificado from "../imagens/CertificadoBase64";
+import {FixedSizeGrid} from "react-window";
+import data from "../respostas/Data";
+import nvi from "../biblia/nvi";
+import AutoSizer from "react-virtualized-auto-sizer";
+import {ThemeContext} from "@emotion/react";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const TelaAnoBiblicoLivros = () => {
+
+    useEffect(() => {
+        if (!sessionStorage.getItem('id')) {
+            window.location = '/';
+        }
+    }, [])
 
 
     const navigate = useNavigate();
@@ -144,12 +165,135 @@ const TelaAnoBiblicoLivros = () => {
 
     }
 
+    function diminuirNumero(num) {
+        // Diminui 1 do número
+        num -= 1;
+        // Verifica se o resultado é 0
+        if (num < 0) {
+            // Se for 0, retorna 1
+            return 0;
+        } else {
+            // Caso contrário, retorna o número diminuído
+            return (num + 1) * getLargura();
+        }
+    }
+
+    const Cell = ({columnIndex, rowIndex, style}) => (
+        <div style={style}>
+            {nvi[diminuirNumero(rowIndex) + columnIndex].name}
+        </div>
+    );
+
+    function getLargura() {
+        const largura = window.innerWidth;
+
+        if (largura < 600) {
+            return 1; // Largura pequena
+        } else if (largura < 1200) {
+            return 2; // Largura média
+        } else {
+            return 6; // Largura grande
+        }
+    }
+
+    const ListComponent = () => {
+        return (
+            <AutoSizer>
+                {({height, width}) => (
+                    <FixedSizeGrid
+                        columnCount={getLargura()}
+                        columnWidth={(width / getLargura()) - 5}
+                        height={height}
+                        rowCount={Math.ceil(nvi.length / getLargura())}
+                        rowHeight={84}
+                        width={width}
+                    >
+                        {Row}
+                    </FixedSizeGrid>
+                )}
+            </AutoSizer>
+        );
+    };
+
+
+    const theme = React.useContext(ThemeContext);
+
+
+    const backgroundColor = theme.palette.background.default;
+    const Row = ({columnIndex, rowIndex, style}) => {
+        return (
+            <div style={{...style, backgroundColor: getContagem(diminuirNumero(rowIndex) + columnIndex, nvi[diminuirNumero(rowIndex) + columnIndex].chapters.length) === 100 ? "green" : "none",
+                border: '5px solid', borderColor: backgroundColor}}>
+                <ListItem disablePadding secondaryAction={
+                    <div className="box"
+                         style={{
+                             display: "flex",
+                             flexWrap: "wrap",
+                             justifyContent: "space-between"
+                         }}>
+                        <div className="title" id={"perc" + nvi[diminuirNumero(rowIndex) + columnIndex].id}
+                             style={{
+                                 justifyContent: "center",
+                                 alignItems: "center",
+                                 position: "relative",
+                                 display: "inline-block"
+                             }}>
+                            <Box sx={{position: 'relative', display: 'inline-flex'}}>
+                                <CircularProgress sx={{color: '#227C70'}}
+                                                  style={{width: '60px', height: '60px'}}
+                                                  variant="determinate"
+                                                  value={getContagem(diminuirNumero(rowIndex) + columnIndex, nvi[diminuirNumero(rowIndex) + columnIndex].chapters.length)}/>
+                                <Box
+                                    sx={{
+                                        top: 0,
+                                        left: 0,
+                                        bottom: 0,
+                                        right: 0,
+                                        position: 'absolute',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}
+                                >
+                                    <Typography variant="caption" component="div"
+                                                color="text.secondary"
+                                                sx={{fontSize: '12px'}}>
+                                        {(() => {
+                                            try {
+                                                const contagemValue = Number(getContagem(diminuirNumero(rowIndex) + columnIndex, nvi[diminuirNumero(rowIndex) + columnIndex].chapters.length));
+                                                return `${contagemValue ? contagemValue.toFixed(2) : '0'}%`;
+                                            } catch (error) {
+                                                console.error('Erro ao formatar a porcentagem:', error);
+                                                return 'Erro';
+                                            }
+                                        })()}
+                                    </Typography>
+                                </Box>
+                            </Box>
+
+                        </div>
+                    </div>
+                }>
+                    <ListItemButton key={nvi[diminuirNumero(rowIndex) + columnIndex]}
+                                    onClick={() => handleClick(diminuirNumero(rowIndex) + columnIndex)}
+                                    style={{height: 84}}>
+                        <Box>
+                            <ListItemText
+                                primary={nvi[diminuirNumero(rowIndex) + columnIndex].name}
+                            />
+                        </Box>
+                    </ListItemButton>
+                </ListItem>
+            </div>
+        );
+    };
+
 
     return (
         <div style={{position: 'fixed', width: '100%'}}>
 
             <Box sx={{flexGrow: 1}} style={{width: '100%'}}>
-                <AppBar position="static" enableColorOnDark style={{width: '100%'}}>
+                <AppBar position="static" style={{width: '100%'}}>
                     <Toolbar>
                         <IconButton size="large"
                                     edge="start"
@@ -171,83 +315,9 @@ const TelaAnoBiblicoLivros = () => {
             </Box>
 
 
-            <div>
-                <Box sx={{maxHeight: '88vh', overflow: 'auto'}}>
-                    <Box sx={{flexGrow: 1, margin: 2}}>
+            <div style={{width: '100%', height: '82vh'}}>
 
-                        <Grid container spacing={{xs: 2, sm: 2, md: 2}} columns={{xs: 12, sm: 10, md: 8}}
-                              color="inherit">
-                            {nvi.map((livrox, i) => (
-                                <Grid justifyContent="flex-end" item xs={12} sm={6} md={4} key={i}>
-                                    <Card
-                                        id={livrox.id}
-                                        className={"xx"}
-                                        style={{backgroundColor: getContagem(i, livrox.chapters.length) === 100 ? "#00dd0d" : "white"}}
-                                        onClick={() => handleClick(i)}
-                                    >
-                                        <CardContent style={{position: 'relative'}} sx={{
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            justifyContent: "center",
-                                            height: "100%",
-                                        }}>
-                                            <div className="box"
-                                                 style={{
-                                                     display: "flex",
-                                                     flexWrap: "wrap",
-                                                     justifyContent: "space-between"
-                                                 }}>
-                                                <div className="title">{livrox.name}</div>
-                                                <div className="title" id={"perc" + livrox.id}
-                                                     style={{
-                                                         justifyContent: "center",
-                                                         alignItems: "center",
-                                                         position: "relative",
-                                                         display: "inline-block"
-                                                     }}>
-                                                    <Box sx={{position: 'relative', display: 'inline-flex'}}>
-                                                        <CircularProgress sx={{color: '#227C70'}}
-                                                                          style={{width: '60px', height: '60px'}}
-                                                                          variant="determinate"
-                                                                          value={getContagem(i, livrox.chapters.length)}/>
-                                                        <Box
-                                                            sx={{
-                                                                top: 0,
-                                                                left: 0,
-                                                                bottom: 0,
-                                                                right: 0,
-                                                                position: 'absolute',
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                justifyContent: 'center'
-                                                            }}
-                                                        >
-                                                            <Typography variant="caption" component="div"
-                                                                        color="text.secondary"
-                                                                        sx={{fontSize: '12px'}}>
-                                                                {(() => {
-                                                                    try {
-                                                                        const contagemValue = Number(getContagem(i, livrox.chapters.length));
-                                                                        return `${contagemValue ? contagemValue.toFixed(2) : '0'}%`;
-                                                                    } catch (error) {
-                                                                        console.error('Erro ao formatar a porcentagem:', error);
-                                                                        return 'Erro';
-                                                                    }
-                                                                })()}
-                                                            </Typography>
-                                                        </Box>
-                                                    </Box>
-
-                                                </div>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </Box>
-                </Box>
-
+                <ListComponent/>
             </div>
 
 
