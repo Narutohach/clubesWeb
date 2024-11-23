@@ -25,7 +25,7 @@
     "crypto-js": "^4.1.1",
     "date-fns": "^2.29.3",
     "dayjs": "^1.11.7",
-    "firebase": "^9.17.2",
+    "firebase": "^10.9.0",
     "moment": "^2.29.4",
     "pdfjs-dist": "^3.3.122",
     "primereact": "^10.5.1",
